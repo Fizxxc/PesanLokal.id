@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - PesanLokal</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .notif-toast {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      max-width: 300px;
+      z-index: 9999;
+    }
+    .clock {
+      position: fixed;
+      top: 79px;
+      right: 10px;
+      font-size: 0.9rem;
+      color: #333;
+      background: rgba(255,255,255,0.8);
+      padding: 5px 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <main>
+    <section>
+      <h2>Pesanan Masuk</h2>
+      <div id="orders"></div>
+    </section>
+
+    <section>
+      <h2>Kirim Info ke Pengguna</h2>
+      <textarea id="broadcast" placeholder="Masukkan info..." rows="5"></textarea>
+      <button onclick="sendBroadcast()">Kirim Info</button>
+    </section>
+  </main>
+
+  <div id="toastContainer"></div>
+    <div class="clock" id="clock"></div>
+  <script type="module">
+    import { auth, db } from '/firebase.js';
+    import {
+      collection, getDocs, addDoc, doc, getDoc, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const ordersEl = document.getElementById('orders');
+    const toastContainer = document.getElementById('toastContainer');
+
+            function updateClock() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      clock.textContent = `${dateString} | ${timeString}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+    
+    window.logout = () => {
+      signOut(auth).then(() => {
+        Swal.fire('Logout berhasil', '', 'success').then(() => {
+          location.href = "/index.html";
+        });
+      });
+    }
+
+    window.sendBroadcast = async () => {
+      const text = document.getElementById('broadcast').value.trim();
+      if (!text) return Swal.fire('Pesan kosong', 'Masukkan info sebelum mengirim.', 'warning');
+
+      await addDoc(collection(db, "notifications"), {
+        text,
+        timestamp: Date.now()
+      });
+
+      Swal.fire('Info berhasil dikirim', '', 'success');
+      document.getElementById('broadcast').value = '';
+    }
+
+    async function loadOrders() {
+      ordersEl.innerHTML = '';
+      const snapshot = await getDocs(collection(db, "orders"));
+      if (snapshot.empty) {
+        ordersEl.innerHTML = '<p>Belum ada pesanan.</p>';
+      } else {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <p><strong>${data.product}</strong> - <em>${data.note || '-'}</em><br>${new Date(data.timestamp).toLocaleString()}</p>
+            <select onchange="updateStatus('${doc.id}', this.value)">
+              <option value="">Ubah Status</option>
+              <option value="Sedang diproses">Sedang diproses</option>
+              <option value="Siap diambil">Siap diambil</option>
+              <option value="Selesai">Selesai</option>
+            </select>
+          `;
+          ordersEl.appendChild(div);
+        });
+      }
+    }
+
+    window.updateStatus = async (id, status) => {
+      await addDoc(collection(db, "notifications"), {
+        text: `Status pesanan Anda: ${status}`,
+        timestamp: Date.now()
+      });
+      showToast(`Status pesanan diperbarui: ${status}`);
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'notif-toast';
+      toast.innerText = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        Swal.fire('Akses ditolak', 'Silakan login terlebih dahulu.', 'error').then(() => {
+          location.href = "/login.html";
+        });
+      } else {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (!userDoc.exists() || userDoc.data().role !== "admin") {
+          Swal.fire('Akses ditolak', 'Hanya admin yang dapat mengakses halaman ini.', 'error').then(() => {
+            location.href = "/index.html";
+          });
+        } else {
+          // Listen realtime
+          onSnapshot(collection(db, "orders"), () => loadOrders());
+        }
+      }
+    });
+  </script>
+</body>
+</html>

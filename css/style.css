@@ -1,0 +1,184 @@
+/* style.css - Mobile First Design */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+header {
+  background-color: #0099ff;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-left: 1rem;
+}
+
+.notif-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.notif-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+main {
+  padding: 1rem;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-card {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.product-card p {
+  margin: 0 0 1rem;
+}
+
+.product-card button {
+  padding: 0.5rem 1rem;
+  background-color: #0099ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.product-card button:hover {
+  background-color: #007acc;
+}
+
+.notif-panel {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+}
+
+.notif-panel.hidden {
+  display: none;
+}
+
+.notif-item {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Login/Register Form */
+input[type="email"], input[type="text"], input[type="password"], textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: #0099ff;
+  color: white;
+  border: none;
+  border-radius: 60px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #007acc;
+}
+
+/* Admin Dashboard */
+#orders div {
+  background: #fff;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Responsive Grid for larger screens */
+@media (min-width: 768px) {
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
