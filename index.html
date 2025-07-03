@@ -126,12 +126,38 @@
     footer a:hover {
       text-decoration: underline;
     }
+    .version-badge {
+  font-size: 0.7em;
+  padding: 2px 8px;
+  margin-left: 8px;
+  background: linear-gradient(90deg, #ff00cc, #3333ff, #00ccff);
+  background-size: 200% auto;
+  color: white;
+  border-radius: 12px;
+  animation: shine 3s linear infinite;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255,255,255,0.4);
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
   </style>
 </head>
 
 <body>
   <header>
-    <h1>PesanLokal.id</h1>
+    <h1>
+      PesanLokal
+      <span class="version-badge">V.Beta</span>
+    </h1>
+
     <div style="display:flex; align-items:center; gap:1rem">
       <button id="authBtn"></button>
       <div class="notif-icon" id="notifToggle">
