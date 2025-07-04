@@ -92,7 +92,7 @@
       <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google"> Sign in with Google
     </button>
     <div class="bottom-text">
-      I'm a new user. <a href="/register.html" style="color:#1e1b4b; font-weight: 600;">Sign Up</a>
+      I'm a new user. <a href="/register" style="color:#1e1b4b; font-weight: 600;">Sign Up</a>
     </div>
   </div>
 
@@ -106,7 +106,7 @@
 
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          location.href = "/index.html";
+          location.href = "/home";
         })
         .catch(err => alert("Login gagal: " + err.message));
     }
@@ -114,7 +114,7 @@
     window.googleLogin = () => {
       signInWithPopup(auth, provider)
         .then(() => {
-          location.href = "/index.html";
+          location.href = "/home";
         })
         .catch(err => alert("Login gagal: " + err.message));
     }
