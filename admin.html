@@ -7,6 +7,52 @@
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1e1b4b;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    main {
+      padding: 1rem;
+    }
+    section {
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    textarea, input, select {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    button {
+      background: #1e1b4b;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2a255d;
+    }
     .notif-toast {
       position: fixed;
       bottom: 1rem;
@@ -31,9 +77,29 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       z-index: 999;
     }
+    .loading-page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #1e1b4b url('/assets/loading-illustration.png') no-repeat center center;
+      background-size: contain;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 10000;
+      color: white;
+      font-size: 1.2rem;
+    }
   </style>
 </head>
 <body>
+  <div class="loading-page" id="loadingPage">
+    <p>Loading, please wait...</p>
+  </div>
+
   <header>
     <h1>Admin Dashboard</h1>
     <button onclick="logout()">Logout</button>
@@ -47,17 +113,26 @@
 
     <section>
       <h2>Kirim Info ke Pengguna</h2>
-      <textarea id="broadcast" placeholder="Masukkan info..." rows="5"></textarea>
+      <textarea id="broadcast" placeholder="Masukkan info..." rows="4"></textarea>
       <button onclick="sendBroadcast()">Kirim Info</button>
+    </section>
+
+    <section>
+      <h2>Tambah Promo</h2>
+      <input type="text" id="promoTitle" placeholder="Judul Promo">
+      <textarea id="promoDesc" placeholder="Deskripsi Promo" rows="3"></textarea>
+      <button onclick="addPromo()">Tambah Promo</button>
     </section>
   </main>
 
   <div id="toastContainer"></div>
-    <div class="clock" id="clock"></div>
+  <div class="clock" id="clock"></div>
+  <audio id="notifSound" src="/assets/mixkit-clear-announce-tones-2861.wav" preload="auto"></audio>
+
   <script type="module">
     import { auth, db } from '/firebase.js';
     import {
-      collection, getDocs, addDoc, doc, getDoc, onSnapshot
+      collection, getDocs, addDoc, doc, getDoc, onSnapshot, updateDoc
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import {
       signOut, onAuthStateChanged
@@ -65,8 +140,11 @@
 
     const ordersEl = document.getElementById('orders');
     const toastContainer = document.getElementById('toastContainer');
+    const clock = document.getElementById('clock');
+    const notifSound = document.getElementById('notifSound');
+    const loadingPage = document.getElementById('loadingPage');
 
-            function updateClock() {
+    function updateClock() {
       const now = new Date();
       const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -74,7 +152,7 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
-    
+
     window.logout = () => {
       signOut(auth).then(() => {
         Swal.fire('Logout berhasil', '', 'success').then(() => {
@@ -96,18 +174,34 @@
       document.getElementById('broadcast').value = '';
     }
 
-    async function loadOrders() {
+    window.addPromo = async () => {
+      const title = document.getElementById('promoTitle').value.trim();
+      const desc = document.getElementById('promoDesc').value.trim();
+
+      if (!title || !desc) return Swal.fire('Lengkapi data', 'Judul dan deskripsi promo wajib diisi.', 'warning');
+
+      await addDoc(collection(db, "promos"), {
+        title,
+        desc,
+        timestamp: Date.now()
+      });
+
+      Swal.fire('Promo berhasil ditambahkan', '', 'success');
+      document.getElementById('promoTitle').value = '';
+      document.getElementById('promoDesc').value = '';
+    }
+
+    async function loadOrders(snapshot) {
       ordersEl.innerHTML = '';
-      const snapshot = await getDocs(collection(db, "orders"));
       if (snapshot.empty) {
         ordersEl.innerHTML = '<p>Belum ada pesanan.</p>';
       } else {
-        snapshot.forEach(doc => {
-          const data = doc.data();
+        snapshot.forEach(docItem => {
+          const data = docItem.data();
           const div = document.createElement('div');
           div.innerHTML = `
             <p><strong>${data.product}</strong> - <em>${data.note || '-'}</em><br>${new Date(data.timestamp).toLocaleString()}</p>
-            <select onchange="updateStatus('${doc.id}', this.value)">
+            <select onchange="updateStatus('${docItem.id}', this.value)">
               <option value="">Ubah Status</option>
               <option value="Sedang diproses">Sedang diproses</option>
               <option value="Siap diambil">Siap diambil</option>
@@ -120,6 +214,9 @@
     }
 
     window.updateStatus = async (id, status) => {
+      const orderRef = doc(db, "orders", id);
+      await updateDoc(orderRef, { status });
+
       await addDoc(collection(db, "notifications"), {
         text: `Status pesanan Anda: ${status}`,
         timestamp: Date.now()
@@ -147,8 +244,11 @@
             location.href = "/index.html";
           });
         } else {
-          // Listen realtime
-          onSnapshot(collection(db, "orders"), () => loadOrders());
+          const unsub = onSnapshot(collection(db, "orders"), (snapshot) => {
+            notifSound.play();
+            loadOrders(snapshot);
+            loadingPage.style.display = 'none';
+          });
         }
       }
     });

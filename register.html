@@ -5,23 +5,101 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - PesanLokal</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #1e1b4b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 400px;
+      background: #fff;
+      color: #111;
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #1e1b4b;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    label {
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    button {
+      width: 100%;
+      background-color: #1e1b4b;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2a255d;
+    }
+    .google-btn {
+      background: white;
+      color: #111;
+      border: 1px solid #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .bottom-text {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <main style="padding: 2rem;">
-    <h2 style="text-align: center;">PesanLokal.id | Register</h2>
-    <input type="text" id="regName" placeholder="Nama Lengkap"><br><br>
-    <input type="email" id="regEmail" placeholder="Email"><br><br>
-    <input type="password" id="regPassword" placeholder="Password"><br><br>
-    <button onclick="register()">Daftar</button>
-    <p>Sudah punya akun? <a href="/login.html">Login di sini</a></p>
-  </main>
-  <footer>
-    <p style="text-align: center; font-size: 0.8rem; color: #666;">&copy; 2025 PesanLokal.id</p>
-  </footer>
+  <div class="container">
+    <h2>Let's Start</h2>
+    <input type="text" id="regName" placeholder="Full Name">
+    <input type="email" id="regEmail" placeholder="Email Address">
+    <input type="password" id="regPassword" placeholder="Password">
+    <label>
+      <input type="checkbox" required>
+      I agree to the Terms & Conditions and Privacy Policy
+    </label>
+    <button onclick="register()">Create Account</button>
+    <button class="google-btn" onclick="googleLogin()">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google"> Sign Up with Google
+    </button>
+    <div class="bottom-text">
+      Already have an account? <a href="/login.html" style="color:#1e1b4b; font-weight: 600;">Sign In</a>
+    </div>
+  </div>
 
   <script type="module">
-    import { auth, db } from '/firebase.js';
-    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { auth, db, provider } from '/firebase.js';
+    import { createUserWithEmailAndPassword, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     window.register = () => {
@@ -49,6 +127,22 @@
         .catch((err) => {
           alert("Gagal Register: " + err.message);
         });
+    }
+
+    window.googleLogin = () => {
+      signInWithPopup(auth, provider)
+        .then(async (result) => {
+          const user = result.user;
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            email: user.email,
+            name: user.displayName,
+            role: "user",
+            createdAt: Date.now()
+          });
+          location.href = "/index.html";
+        })
+        .catch(err => alert("Login Google gagal: " + err.message));
     }
   </script>
 </body>

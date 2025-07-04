@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -150,14 +149,9 @@
 
   </style>
 </head>
-
 <body>
   <header>
-    <h1>
-      PesanLokal.id
-      <span class="version-badge">V.Beta</span>
-    </h1>
-
+    <h1>PesanLokal.id <span class="version-badge">V.Beta</span></h1>
     <div style="display:flex; align-items:center; gap:1rem">
       <button id="authBtn"></button>
       <div class="notif-icon" id="notifToggle">
@@ -168,43 +162,18 @@
   </header>
 
   <main>
+    <div class="clock" id="clock"></div>
     <section id="welcome">
-      <div class="clock" id="clock"></div>
       <h2>Selamat Datang di PesanLokal!</h2>
       <p>Silakan pilih produk lokal favoritmu dan pesan sekarang.</p>
     </section>
 
     <div class="info-menu">
-      <div class="info-item" id="minumanBtn">
-        <img
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWN1cC1zb2RhLWljb24gbHVjaWRlLWN1cC1zb2RhIj48cGF0aCBkPSJtNiA4IDEuNzUgMTIuMjhhMiAyIDAgMCAwIDIgMS43Mmg0LjU0YTIgMiAwIDAgMCAyLTEuNzJMMTggOCIvPjxwYXRoIGQ9Ik01IDhoMTQiLz48cGF0aCBkPSJNNyAxNWE2LjQ3IDYuNDcgMCAwIDEgNSAwIDYuNDcgNi40NyAwIDAgMCA1IDAiLz48cGF0aCBkPSJtMTIgOCAxLTZoMiIvPjwvc3ZnPg=="
-          alt="Minuman">
-        <div>Minuman</div>
-      </div>
-      <div class="info-item" id="promoBtn">
-        <img
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXRhZ3MtaWNvbiBsdWNpZGUtdGFncyI+PHBhdGggZD0ibTE1IDUgNi4zIDYuM2EyLjQgMi40IDAgMCAxIDAgMy40TDE3IDE5Ii8+PHBhdGggZD0iTTkuNTg2IDUuNTg2QTIgMiAwIDAgMCA4LjE3MiA1SDNhMSAxIDAgMCAwLTEgMXY1LjE3MmEyIDIgMCAwIDAgLjU4NiAxLjQxNEw4LjI5IDE4LjI5YTIuNDI2IDIuNDI2IDAgMCAwIDMuNDIgMGwzLjU4LTMuNThhMi40MjYgMi40MjYgMCAwIDAgMC0zLjQyeiIvPjxjaXJjbGUgY3g9IjYuNSIgY3k9IjkuNSIgcj0iLjUiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjwvc3ZnPg=="
-          alt="Promo">
-        <div>Promo</div>
-      </div>
-      <div class="info-item" id="historyBtn">
-        <img
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhpc3RvcnktaWNvbiBsdWNpZGUtaGlzdG9yeSI+PHBhdGggZD0iTTMgMTJhOSA5IDAgMSAwIDktOSA5Ljc1IDkuNzUgMCAwIDAtNi43NCAyLjc0TDMgOCIvPjxwYXRoIGQ9Ik0zIDN2NWg1Ii8+PHBhdGggZD0iTTEyIDd2NWw0IDIiLz48L3N2Zz4="
-          alt="History">
-        <div>History</div>
-      </div>
-      <div class="info-item" id="makananBtn">
-        <img
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXV0ZW5zaWxzLWNyb3NzZWQtaWNvbiBsdWNpZGUtdXRlbnNpbHMtY3Jvc3NlZCI+PHBhdGggZD0ibTE2IDItMi4zIDIuM2EzIDMgMCAwIDAgMCA0LjJsMS44IDEuOGEzIDMgMCAwIDAgNC4yIDBMMjIgOCIvPjxwYXRoIGQ9Ik0xNSAxNSAzLjMgMy4zYTQuMiA0LjIgMCAwIDAgMCA2bDcuMyA3LjNjLjcuNyAyIC43IDIuOCAwTDE1IDE1Wm0wIDAgNyA3Ii8+PHBhdGggZD0ibTIuMSAyMS44IDYuNC02LjMiLz48cGF0aCBkPSJtMTkgNS03IDciLz48L3N2Zz4="
-          alt="Makanan">
-        <div>Makanan</div>
-      </div>
-      <div class="info-item" id="infoBtn">
-        <img
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJhZGdlLWluZm8taWNvbiBsdWNpZGUtYmFkZ2UtaW5mbyI+PHBhdGggZD0iTTMuODUgOC42MmE0IDQgMCAwIDEgNC43OC00Ljc3IDQgNCAwIDAgMSA2Ljc0IDAgNCA0IDAgMCAxIDQuNzggNC43OCA0IDQgMCAwIDEgMCA2Ljc0IDQgNCAwIDAgMS00Ljc3IDQuNzggNCA0IDAgMCAxLTYuNzUgMCA0IDQgMCAwIDEtNC43OC00Ljc3IDQgNCAwIDAgMSAwLTYuNzZaIi8+PGxpbmUgeDE9IjEyIiB4Mj0iMTIiIHkxPSIxNiIgeTI9IjEyIi8+PGxpbmUgeDE9IjEyIiB4Mj0iMTIuMDEiIHkxPSI4IiB5Mj0iOCIvPjwvc3ZnPg=="
-          alt="info">
-        <div>Information</div>
-      </div>
+      <div class="info-item" id="minumanBtn"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWN1cC1zb2RhLWljb24gbHVjaWRlLWN1cC1zb2RhIj48cGF0aCBkPSJtNiA4IDEuNzUgMTIuMjhhMiAyIDAgMCAwIDIgMS43Mmg0LjU0YTIgMiAwIDAgMCAyLTEuNzJMMTggOCIvPjxwYXRoIGQ9Ik01IDhoMTQiLz48cGF0aCBkPSJNNyAxNWE2LjQ3IDYuNDcgMCAwIDEgNSAwIDYuNDcgNi40NyAwIDAgMCA1IDAiLz48cGF0aCBkPSJtMTIgOCAxLTZoMiIvPjwvc3ZnPg==" alt="Minuman"><div>Minuman</div></div>
+      <div class="info-item" id="promoBtn"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXRhZ3MtaWNvbiBsdWNpZGUtdGFncyI+PHBhdGggZD0ibTE1IDUgNi4zIDYuM2EyLjQgMi40IDAgMCAxIDAgMy40TDE3IDE5Ii8+PHBhdGggZD0iTTkuNTg2IDUuNTg2QTIgMiAwIDAgMCA4LjE3MiA1SDNhMSAxIDAgMCAwLTEgMXY1LjE3MmEyIDIgMCAwIDAgLjU4NiAxLjQxNEw4LjI5IDE4LjI5YTIuNDI2IDIuNDI2IDAgMCAwIDMuNDIgMGwzLjU4LTMuNThhMi40MjYgMi40MjYgMCAwIDAgMC0zLjQyeiIvPjxjaXJjbGUgY3g9IjYuNSIgY3k9IjkuNSIgcj0iLjUiIGZpbGw9ImN1cnJlbnRDb2xvciIvPjwvc3ZnPg==" alt="Promo"><div>Promo</div></div>
+      <div class="info-item" id="historyBtn"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWN1cC1zb2RhLWljb24gbHVjaWRlLWN1cC1zb2RhIj48cGF0aCBkPSJtNiA4IDEuNzUgMTIuMjhhMiAyIDAgMCAwIDIgMS43Mmg0LjU0YTIgMiAwIDAgMCAyLTEuNzJMMTggOCIvPjxwYXRoIGQ9Ik01IDhoMTQiLz48cGF0aCBkPSJNNyAxNWE2LjQ3IDYuNDcgMCAwIDEgNSAwIDYuNDcgNi40NyAwIDAgMCA1IDAiLz48cGF0aCBkPSJtMTIgOCAxLTZoMiIvPjwvc3ZnPg==" alt="History"><div>History</div></div>
+      <div class="info-item" id="makananBtn"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXV0ZW5zaWxzLWljb24gbHVjaWRlLXV0ZW5zaWxzIj48cGF0aCBkPSJNMyAydjdjMCAxLjEuOSAyIDIgMmg0YTIgMiAwIDAgMCAyLTJWMiIvPjxwYXRoIGQ9Ik03IDJ2MjAiLz48cGF0aCBkPSJNMjEgMTVWMmE1IDUgMCAwIDAtNSA1djZjMCAxLjEuOSAyIDIgMmgzWm0wIDB2NyIvPjwvc3ZnPg==" alt="Makanan"><div>Makanan</div></div>
+      <div class="info-item" id="infoBtn"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJhZGdlLWluZm8taWNvbiBsdWNpZGUtYmFkZ2UtaW5mbyI+PHBhdGggZD0iTTMuODUgOC42MmE0IDQgMCAwIDEgNC43OC00Ljc3IDQgNCAwIDAgMSA2Ljc0IDAgNCA0IDAgMCAxIDQuNzggNC43OCA0IDQgMCAwIDEgMCA2Ljc0IDQgNCAwIDAgMS00Ljc3IDQuNzggNCA0IDAgMCAxLTYuNzUgMCA0IDQgMCAwIDEtNC43OC00Ljc3IDQgNCAwIDAgMSAwLTYuNzZaIi8+PGxpbmUgeDE9IjEyIiB4Mj0iMTIiIHkxPSIxNiIgeTI9IjEyIi8+PGxpbmUgeDE9IjEyIiB4Mj0iMTIuMDEiIHkxPSI4IiB5Mj0iOCIvPjwvc3ZnPg==" alt="info"><div>Information</div></div>
     </div>
 
     <section class="product-list" id="productList"></section>
@@ -216,25 +185,14 @@
   <div class="notif-panel" id="notifPanel"></div>
 
   <footer>
-    <div>
-      <p style="text-align: center; font-size: 0.8rem; color: #666;">&copy; 2025 PesanLokal.id</p>
-    </div>
-    <div>
-      <p style="text-align: center; font-size: 1.2rem; color: #666;">Cek Update web <a
-          href="https://info-digicraft.vercel.app/info.html" target="_blank">Disini</a></p>
-    </div>
+    <p style="font-size: 0.8rem; color: #666;">&copy; 2025 PesanLokal.id</p>
+    <p style="font-size: 1.2rem; color: #666;">Cek Update web <a href="https://info-digicraft.vercel.app/info.html" target="_blank">Disini</a></p>
   </footer>
+
   <script type="module">
     import { auth, db } from '/firebase.js';
-    import {
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import {
-      collection,
-      getDocs,
-      addDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const productList = document.getElementById('productList');
     const notifPanel = document.getElementById('notifPanel');
@@ -244,12 +202,12 @@
     const notifToggle = document.getElementById('notifToggle');
     const clock = document.getElementById('clock');
     let currentUser = null;
+    let promoContent = "Belum ada promo saat ini.";
 
     function updateClock() {
       const now = new Date();
-      const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-      clock.textContent = `${dateString} | ${timeString}`;
+      clock.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' | ' +
+                          now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
     setInterval(updateClock, 1000);
     updateClock();
@@ -269,13 +227,9 @@
         const card = document.createElement('div');
         card.className = 'product-card';
         const orderBtn = currentUser
-          ? `<button onclick=\"orderProduct('${p.name}')\">Pesan</button>`
-          : `<button onclick=\"Swal.fire('Kamu Belum Login','Silakan login dulu buat pesan','warning')\">Pesan</button>`;
-        card.innerHTML = `
-          <h3>${p.name}</h3>
-          <p>Rp ${p.price}</p>
-          ${orderBtn}
-        `;
+          ? `<button onclick="orderProduct('${p.name}')">Pesan</button>`
+          : `<button onclick="Swal.fire('Kamu Belum Login','Silakan login dulu buat pesan','warning')">Pesan</button>`;
+        card.innerHTML = `<h3>${p.name}</h3><p>Rp ${p.price}</p>${orderBtn}`;
         productList.appendChild(card);
       });
     }
@@ -285,11 +239,10 @@
         title: `Pesan ${productName}`,
         input: 'textarea',
         inputLabel: 'Catatan (opsional)',
-        inputPlaceholder: 'Tulis catatan di sini... \nContoh: Tambahkan es batu \n*Note - Isi nama kamu juga di sini',
+        inputPlaceholder: 'Tulis catatan di sini...',
         showCancelButton: true,
         confirmButtonText: 'Pesan'
       });
-
       if (note !== undefined) {
         await addDoc(collection(db, "orders"), {
           product: productName,
@@ -297,90 +250,73 @@
           note: note || "",
           timestamp: Date.now()
         });
-
         Swal.fire('Pesanan berhasil dikirim!', '', 'success');
       }
     }
 
-    function toggleNotif() {
-      notifPanel.style.display = notifPanel.style.display === "none" ? "block" : "none";
+    async function loadPromo() {
+      const snapshot = await getDocs(collection(db, "promos"));
+      if (!snapshot.empty) {
+        const promo = snapshot.docs[0].data();
+        promoContent = promo.text || promoContent;
+      }
     }
+
+    document.getElementById('minumanBtn').onclick = () => Swal.fire('Minuman', 'Menu minuman: Es Teh, Teajus', 'info');
+    document.getElementById('promoBtn').onclick = () => Swal.fire('Promo', promoContent, 'info');
+    document.getElementById('historyBtn').onclick = () => Swal.fire('History', 'Fitur belum tersedia.', 'info');
+    document.getElementById('makananBtn').onclick = () => Swal.fire('Makanan', 'Menu makanan: Martel, Cilor, Mie Goreng, Mie Kuah', 'info');
+    document.getElementById('infoBtn').onclick = () => Swal.fire('Info', 'Aplikasi masih dalam pengembangan.', 'info');
+    notifToggle.onclick = () => notifPanel.style.display = notifPanel.style.display === "none" ? "block" : "none";
 
     async function loadNotifications() {
       const snapshot = await getDocs(collection(db, "notifications"));
       notifPanel.innerHTML = "";
       if (!snapshot.empty) notifBadge.style.display = "inline-block";
       snapshot.forEach(doc => {
-        const n = document.createElement('div');
-        n.className = 'notif-item';
-        n.textContent = doc.data().text;
-        notifPanel.appendChild(n);
+        const div = document.createElement('div');
+        div.className = 'notif-item';
+        div.textContent = doc.data().text;
+        notifPanel.appendChild(div);
       });
     }
 
     function updateAuthButton(user) {
       if (!user) {
         authBtn.innerText = "Login / Daftar";
-        authBtn.onclick = () => {
-          Swal.fire({
-            title: 'Masuk atau Daftar', 'text': 'Kamu harus login atau daftar untuk melanjutkan.',
-            showCancelButton: true,
-            showDenyButton: true,
-            confirmButtonText: 'Login',
-            denyButtonText: 'Daftar'
-          }).then(result => {
-            if (result.isConfirmed) window.location.href = '/login.html';
-            else if (result.isDenied) window.location.href = '/register.html';
-          });
-        };
+        authBtn.onclick = () => Swal.fire({
+          title: 'Masuk / Daftar',
+          showDenyButton: true,
+          confirmButtonText: 'Login',
+          denyButtonText: 'Daftar'
+        }).then(r => {
+          if (r.isConfirmed) location.href = '/login.html';
+          else if (r.isDenied) location.href = '/register.html';
+        });
       } else {
         authBtn.innerText = "Logout";
-        authBtn.onclick = () => {
-          Swal.fire({
-            title: 'Yakin kamu mau logout nih?', 'text': 'Kamu akan keluar dari akun kamu.',
-            showCancelButton: true,
-            confirmButtonText: 'Iya'
-          }).then(result => {
-            if (result.isConfirmed) signOut(auth);
-          });
-        };
+        authBtn.onclick = () => Swal.fire({
+          title: 'Logout?',
+          showCancelButton: true,
+          confirmButtonText: 'Ya'
+        }).then(r => {
+          if (r.isConfirmed) signOut(auth);
+        });
       }
     }
-
-    document.getElementById('minumanBtn').addEventListener('click', () => {
-      Swal.fire('Minuman', 'Menu minuman yang tersedia: Es Teh, Teajus', 'info');
-    });
-    document.getElementById('promoBtn').addEventListener('click', () => {
-      Swal.fire('Promo', 'Maaf untuk menu ini masih belum tersedia!', 'info');
-    });
-    document.getElementById('historyBtn').addEventListener('click', () => {
-      Swal.fire('History', 'Maaf untuk menu ini masih belum tersedia!', 'info');
-    });
-    document.getElementById('makananBtn').addEventListener('click', () => {
-      Swal.fire('Makanan', 'Menu makanan: Martel, Cilor, Mie Goreng, Mie Kuah', 'info');
-    });
-    document.getElementById('infoBtn').addEventListener('click', () => {
-      Swal.fire('Information', 'Web masih dalam pengembangan, dan juga untuk fitur menu masih dalam pengambangan.\nFitur akan segera hadir sebentar lagi. Terima kasih sudah menggunakan aplikasi kami!', 'info');
-    });
-
-    notifToggle.addEventListener("click", () => {
-      toggleNotif();
-    });
 
     onAuthStateChanged(auth, user => {
       currentUser = user;
       updateAuthButton(user);
       renderProducts();
-
-      if (!user) {
-        notLoggedIn.style.display = "block";
-      } else {
+      if (!user) notLoggedIn.style.display = "block";
+      else {
         notLoggedIn.style.display = "none";
         loadNotifications();
+        loadPromo();
         notifBadge.style.display = "none";
       }
     });
   </script>
 </body>
-
 </html>
