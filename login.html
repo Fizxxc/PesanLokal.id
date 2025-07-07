@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - PesanLokal</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -48,6 +49,12 @@
       align-items: center;
       font-size: 0.9rem;
     }
+    .actions a {
+      color: #1e1b4b;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
     button {
       width: 100%;
       background-color: #1e1b4b;
@@ -81,42 +88,64 @@
 <body>
   <div class="container">
     <h2>Welcome Back</h2>
-    <input type="email" id="email" placeholder="Your Email">
-    <input type="password" id="password" placeholder="Password">
+    <input type="email" id="email" placeholder="Your Email" />
+    <input type="password" id="password" placeholder="Password" />
     <div class="actions">
       <label><input type="checkbox" id="remember"> Remember me</label>
-      <a href="#" style="color:#1e1b4b; font-weight: 600;">Forgot password?</a>
+      <a onclick="forgotPassword()">Forgot password?</a>
     </div>
     <button onclick="login()">Sign In</button>
     <button class="google-btn" onclick="googleLogin()">
       <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google"> Sign in with Google
     </button>
     <div class="bottom-text">
-      I'm a new user. <a href="/register" style="color:#1e1b4b; font-weight: 600;">Sign Up</a>
+      I'm a new user. <a href="/register">Sign Up</a>
     </div>
   </div>
 
   <script type="module">
     import { auth, provider } from '/firebase.js';
-    import { signInWithEmailAndPassword, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+    // LOGIN EMAIL/PASSWORD
     window.login = () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
       signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          location.href = "/home";
-        })
-        .catch(err => alert("Login gagal: " + err.message));
+        .then(() => location.href = "/home")
+        .catch(err => {
+          Swal.fire("Login gagal", err.message, "error");
+        });
     }
 
+    // LOGIN GOOGLE
     window.googleLogin = () => {
       signInWithPopup(auth, provider)
+        .then(() => location.href = "/home")
+        .catch(err => Swal.fire("Login gagal", err.message, "error"));
+    }
+
+    // RESET PASSWORD VIA EMAIL
+    window.forgotPassword = async () => {
+      const { value: email } = await Swal.fire({
+        title: 'Reset Password',
+        input: 'email',
+        inputLabel: 'Masukkan email akun kamu',
+        inputPlaceholder: 'email@example.com',
+        confirmButtonText: 'Kirim Reset Link',
+        showCancelButton: true
+      });
+
+      if (!email) return;
+
+      sendPasswordResetEmail(auth, email)
         .then(() => {
-          location.href = "/home";
+          Swal.fire("Email Terkirim", "Link reset password telah dikirim ke email kamu", "success");
         })
-        .catch(err => alert("Login gagal: " + err.message));
+        .catch(err => {
+          Swal.fire("Gagal", err.message, "error");
+        });
     }
   </script>
 </body>
