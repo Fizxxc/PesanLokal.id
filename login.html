@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - PesanLokal</title>
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +22,7 @@
       align-items: center;
       height: 100vh;
     }
+
     .container {
       width: 70%;
       max-width: 400px;
@@ -28,13 +30,15 @@
       color: #111;
       border-radius: 24px;
       padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+
     h2 {
       margin-top: 0;
       text-align: center;
       color: #1e1b4b;
     }
+
     input {
       width: 100%;
       padding: 0.75rem;
@@ -43,18 +47,21 @@
       border-radius: 10px;
       font-size: 1rem;
     }
+
     .actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.9rem;
     }
+
     .actions a {
       color: #1e1b4b;
       font-weight: 600;
       text-decoration: none;
       cursor: pointer;
     }
+
     button {
       width: 100%;
       background-color: #1e1b4b;
@@ -66,9 +73,11 @@
       margin-top: 1rem;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #2a255d;
     }
+
     .google-btn {
       background: white;
       color: #111;
@@ -78,13 +87,22 @@
       align-items: center;
       gap: 0.5rem;
     }
+
     .bottom-text {
       text-align: center;
       font-size: 0.9rem;
       margin-top: 1rem;
     }
+
+    /* Atur lebar input agar tidak melebihi batas layar */
+    .swal2-input-custom {
+      max-width: 83% !important;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h2>Welcome Back</h2>
@@ -96,7 +114,8 @@
     </div>
     <button onclick="login()">Sign In</button>
     <button class="google-btn" onclick="googleLogin()">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google"> Sign in with Google
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google">
+      Sign in with Google
     </button>
     <div class="bottom-text">
       I'm a new user. <a href="/register">Sign Up</a>
@@ -126,27 +145,36 @@
         .catch(err => Swal.fire("Login gagal", err.message, "error"));
     }
 
-    // RESET PASSWORD VIA EMAIL
-    window.forgotPassword = async () => {
-      const { value: email } = await Swal.fire({
-        title: 'Reset Password',
-        input: 'email',
-        inputLabel: 'Masukkan email akun kamu',
-        inputPlaceholder: 'email@example.com',
-        confirmButtonText: 'Kirim Reset Link',
-        showCancelButton: true
-      });
-
-      if (!email) return;
-
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          Swal.fire("Email Terkirim", "Link reset password telah dikirim ke email kamu", "success");
-        })
-        .catch(err => {
-          Swal.fire("Gagal", err.message, "error");
-        });
+// RESET PASSWORD VIA EMAIL
+window.forgotPassword = async () => {
+  const { value: email } = await Swal.fire({
+    title: 'Reset Password',
+    input: 'email',
+    inputLabel: 'Masukkan email akun kamu',
+    inputPlaceholder: 'email@example.com',
+    confirmButtonText: 'Kirim Reset Link',
+    showCancelButton: true,
+    customClass: {
+      input: 'swal2-input-custom'
+    },
+    inputAttributes: {
+      maxlength: 50,
+      autocapitalize: 'off',
+      autocorrect: 'off'
     }
+  });
+
+  if (!email) return;
+
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      Swal.fire("Email Terkirim", "Link reset password telah dikirim ke email kamu", "success");
+    })
+    .catch(err => {
+      Swal.fire("Gagal", err.message, "error");
+    });
+}
   </script>
 </body>
+
 </html>
