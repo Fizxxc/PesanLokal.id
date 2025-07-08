@@ -52,31 +52,54 @@
       border-left: 4px solid #007BFF;
       border-radius: 6px;
     }
-    .product-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .product-card {
-      width: 150px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 1rem;
-      background: #fff;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-    .product-card button {
-      margin-top: 0.5rem;
-      padding: 6px 10px;
-      border: none;
-      border-radius: 5px;
-      background: #007bff;
-      color: #fff;
-      cursor: pointer;
-    }
+.product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.product-card {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card h3 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.product-card p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.product-card button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.7rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.product-card button:hover {
+  background-color: #e60000;
+}
+
     footer {
       text-align: center;
       padding: 1rem;
@@ -144,25 +167,35 @@
       { name: "Mie Kuah", price: 6000 }
     ];
 
-    function renderProducts() {
-      productList.innerHTML = "";
-      products.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        const button = document.createElement('button');
-        button.textContent = 'Pesan';
-        button.onclick = () => {
-          if (!currentUser) {
-            Swal.fire('Kamu Belum Login','Silakan login dulu buat pesan','warning');
-          } else {
-            orderProduct(p.name);
-          }
-        };
-        card.innerHTML = `<h3>${p.name}</h3><p>Rp ${p.price}</p>`;
-        card.appendChild(button);
-        productList.appendChild(card);
-      });
-    }
+function renderProducts() {
+  productList.innerHTML = "";
+  products.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+
+    const title = document.createElement('h3');
+    title.textContent = p.name;
+
+    const price = document.createElement('p');
+    price.textContent = `Rp ${p.price.toLocaleString('id-ID')}`;
+
+    const button = document.createElement('button');
+    button.textContent = 'Pesan';
+    button.onclick = () => {
+      if (!currentUser) {
+        Swal.fire('Kamu Belum Login','Silakan login dulu buat pesan','warning');
+      } else {
+        orderProduct(p.name);
+      }
+    };
+
+    card.appendChild(title);
+    card.appendChild(price);
+    card.appendChild(button);
+    productList.appendChild(card);
+  });
+}
+
 
     async function orderProduct(productName) {
       const { value: note } = await Swal.fire({
