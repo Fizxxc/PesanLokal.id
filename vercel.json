@@ -5,7 +5,7 @@
     { "source": "/register", "destination": "/register.html" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/home", "destination": "/home.html" },
-    { "source": "/reset", "destination": "/reset-password.html" }
+    { "source": "/reset-password", "destination": "/reset-password.html" }
   ],
   "cleanUrls": true,
   "trailingSlash": false
