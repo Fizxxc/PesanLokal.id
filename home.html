@@ -115,80 +115,83 @@
       color: #666;
       position: relative;
     }
+
     /* Popup Iklan */
-#popupAdBox {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #ffffff;
-  padding: 1.5rem 1rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  max-width: 90%;
-  width: 360px;
-  text-align: center;
-  animation: popupFadeIn 0.3s ease;
-}
+    #popupAdBox {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      padding: 1.5rem 1rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      max-width: 90%;
+      width: 360px;
+      text-align: center;
+      animation: popupFadeIn 0.3s ease;
+    }
 
-#popupAdBox span#popupClose {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #999;
-  transition: color 0.2s ease;
-}
+    #popupAdBox span#popupClose {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #999;
+      transition: color 0.2s ease;
+    }
 
-#popupAdBox span#popupClose:hover {
-  color: #1e1b4b;
-}
+    #popupAdBox span#popupClose:hover {
+      color: #1e1b4b;
+    }
 
-#popupAdBox #popupContent {
-  margin-top: 1rem;
-  font-size: 1rem;
-  color: #333;
-  line-height: 1.4;
-}
+    #popupAdBox #popupContent {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.4;
+    }
 
-/* Info Update Bar */
-#updateInfoBar {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #1e1b4b;
-  color: white;
-  text-align: center;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-  z-index: 9998;
-  animation: slideUp 0.4s ease;
-}
+    /* Info Update Bar */
+    #updateInfoBar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e1b4b;
+      color: white;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      z-index: 9998;
+      animation: slideUp 0.4s ease;
+    }
 
-/* Animasi */
-@keyframes popupFadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -40%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-}
+    /* Animasi */
+    @keyframes popupFadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+      }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
@@ -238,7 +241,16 @@
   <script type="module">
     import { auth, db } from '/firebase.js';
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { collection, getDocs, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      collection,
+      getDocs,
+      addDoc,
+      doc,
+      getDoc,
+      onSnapshot,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 
     const authBtn = document.getElementById('authBtn');
     const userPhoto = document.getElementById('userPhoto');
@@ -349,26 +361,27 @@
         renderProducts();
       }
     });
-    
+
     popupClose.onclick = () => popupAdBox.style.display = 'none';
 
-  onSnapshot(doc(db, "web_config", "public_info"), (docSnap) => {
-    if (docSnap.exists()) {
-      const data = docSnap.data();
+    onSnapshot(doc(db, "web_config", "public_info"), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
 
-      // Iklan popup
-      if (data.ads && data.ads.trim()) {
-        popupContent.innerHTML = data.ads;
-        popupAdBox.style.display = 'block';
-      }
+        // Iklan popup
+        if (data.ads && data.ads.trim()) {
+          popupContent.innerHTML = data.ads;
+          popupAdBox.style.display = 'block';
+        }
 
-      // Info update
-      if (data.info && data.info.trim()) {
-        updateInfoBar.innerHTML = data.info;
-        updateInfoBar.style.display = 'block';
+        // Info update
+        if (data.info && data.info.trim()) {
+          updateInfoBar.innerHTML = data.info;
+          updateInfoBar.style.display = 'block';
+        }
       }
-    }
-  });
+    });
   </script>
 </body>
+
 </html>
