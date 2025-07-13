@@ -238,7 +238,7 @@
   <script type="module">
     import { auth, db } from '/firebase.js';
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { collection, getDocs, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const authBtn = document.getElementById('authBtn');
     const userPhoto = document.getElementById('userPhoto');
@@ -371,5 +371,4 @@
   });
   </script>
 </body>
-
 </html>
