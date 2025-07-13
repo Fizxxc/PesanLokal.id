@@ -123,6 +123,18 @@
       <textarea id="promoDesc" placeholder="Deskripsi Promo" rows="3"></textarea>
       <button onclick="addPromo()">Tambah Promo</button>
     </section>
+
+    <section>
+      <h2>Update Info Sistem</h2>
+      <textarea id="updateInfo" placeholder="Isi info update sistem" rows="3"></textarea>
+      <button onclick="saveUpdateInfo()">Simpan Info Update</button>
+    </section>
+
+    <section>
+      <h2>Atur Iklan Popup</h2>
+      <textarea id="popupAd" placeholder="Isi iklan popup" rows="3"></textarea>
+      <button onclick="savePopupAd()">Simpan Iklan</button>
+    </section>
   </main>
 
   <div id="toastContainer"></div>
@@ -132,7 +144,7 @@
   <script type="module">
     import { auth, db } from '/firebase.js';
     import {
-      collection, getDocs, addDoc, doc, getDoc, onSnapshot, updateDoc
+      collection, getDocs, addDoc, doc, getDoc, onSnapshot, updateDoc, setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import {
       signOut, onAuthStateChanged
@@ -189,6 +201,22 @@
       Swal.fire('Promo berhasil ditambahkan', '', 'success');
       document.getElementById('promoTitle').value = '';
       document.getElementById('promoDesc').value = '';
+    }
+
+    window.saveUpdateInfo = async () => {
+      const text = document.getElementById('updateInfo').value.trim();
+      await setDoc(doc(db, "web_config", "public_info"), {
+        info: text
+      }, { merge: true });
+      Swal.fire('Info sistem diperbarui', '', 'success');
+    }
+
+    window.savePopupAd = async () => {
+      const text = document.getElementById('popupAd').value.trim();
+      await setDoc(doc(db, "web_config", "public_info"), {
+        ads: text
+      }, { merge: true });
+      Swal.fire('Iklan popup disimpan', '', 'success');
     }
 
     async function loadOrders(snapshot) {
