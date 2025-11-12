@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,33 +9,39 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background-color: #1e1b4b;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
       color: #fff;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
     .container {
-      width: 70%;
-      max-width: 400px;
+      width: 90%;
+      max-width: 420px;
       background: #fff;
       color: #111;
       border-radius: 24px;
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      padding: 2.2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     h2 {
-      margin-top: 0;
       text-align: center;
       color: #1e1b4b;
+      margin-top: 0;
     }
 
     input {
@@ -64,28 +69,36 @@
 
     button {
       width: 100%;
-      background-color: #1e1b4b;
+      background: linear-gradient(135deg, #1e1b4b, #3b3dbf);
       color: white;
       border: none;
-      padding: 0.75rem;
+      padding: 0.8rem;
       border-radius: 12px;
       font-size: 1rem;
       margin-top: 1rem;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     button:hover {
-      background-color: #2a255d;
+      transform: scale(1.03);
+      background: linear-gradient(135deg, #2924a3, #4338ca);
     }
 
     .google-btn {
-      background: white;
+      background: #fff;
       color: #111;
       border: 1px solid #ccc;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .google-btn:hover {
+      background: #f5f5f5;
+      transform: scale(1.02);
     }
 
     .bottom-text {
@@ -94,7 +107,11 @@
       margin-top: 1rem;
     }
 
-    /* Atur lebar input agar tidak melebihi batas layar */
+    #phoneLoginArea {
+      display: none;
+      margin-top: 1rem;
+    }
+
     .swal2-input-custom {
       max-width: 83% !important;
       box-sizing: border-box;
@@ -105,76 +122,157 @@
 
 <body>
   <div class="container">
-    <h2>Welcome Back</h2>
-    <input type="email" id="email" placeholder="Your Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <div class="actions">
-      <label><input type="checkbox" id="remember"> Remember me</label>
-      <a onclick="forgotPassword()">Forgot password?</a>
+    <h2>Selamat Datang</h2>
+
+    <div id="emailLoginArea">
+      <input type="email" id="email" placeholder="Alamat Email" />
+      <input type="password" id="password" placeholder="Kata Sandi" />
+      <div class="actions">
+        <label><input type="checkbox" id="remember"> Ingat saya</label>
+        <a onclick="chooseReset()">Lupa password?</a>
+      </div>
+      <button onclick="login()">Masuk</button>
     </div>
-    <button onclick="login()">Sign In</button>
+
+    <div class="divider" style="text-align:center; margin:1rem 0; color:#777;">atau</div>
+
+    <button onclick="togglePhoneLogin()">Masuk dengan Nomor Telepon</button>
+
+    <div id="phoneLoginArea">
+      <input type="tel" id="phone" placeholder="+62xxxxxxxxxx" />
+      <div id="recaptcha-container"></div>
+      <button onclick="sendOTP()">Kirim OTP</button>
+      <input type="text" id="otpCode" placeholder="Masukkan Kode OTP" style="display:none;" />
+      <button id="verifyBtn" onclick="verifyOTP()" style="display:none;">Verifikasi OTP</button>
+    </div>
+
+    <div class="divider" style="text-align:center; margin:1rem 0; color:#777;">atau</div>
+
     <button class="google-btn" onclick="googleLogin()">
       <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google">
-      Sign in with Google
+      Masuk dengan Google
     </button>
+
     <div class="bottom-text">
-      I'm a new user. <a href="/register">Sign Up</a>
+      Pengguna baru? <a href="/register" style="color:#1e1b4b; font-weight:600;">Daftar Sekarang</a>
     </div>
   </div>
 
   <script type="module">
     import { auth, provider } from '/firebase.js';
-    import { signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      signInWithEmailAndPassword,
+      signInWithPopup,
+      sendPasswordResetEmail,
+      RecaptchaVerifier,
+      signInWithPhoneNumber
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    // LOGIN EMAIL/PASSWORD
+    let confirmationResult;
+
+    // --- LOGIN EMAIL/PASSWORD ---
     window.login = () => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) return Swal.fire("Error", "Masukkan email dan password.", "warning");
 
       signInWithEmailAndPassword(auth, email, password)
         .then(() => location.href = "/home")
-        .catch(err => {
-          Swal.fire("Login gagal", err.message, "error");
-        });
-    }
+        .catch(err => Swal.fire("Login gagal", err.message, "error"));
+    };
 
-    // LOGIN GOOGLE
+    // --- LOGIN GOOGLE ---
     window.googleLogin = () => {
       signInWithPopup(auth, provider)
         .then(() => location.href = "/home")
         .catch(err => Swal.fire("Login gagal", err.message, "error"));
+    };
+
+    // --- LOGIN NOMOR TELEPON ---
+    window.togglePhoneLogin = () => {
+      const area = document.getElementById('phoneLoginArea');
+      area.style.display = area.style.display === 'none' ? 'block' : 'none';
+    };
+
+    window.sendOTP = () => {
+      const phone = document.getElementById('phone').value.trim();
+      if (!phone.startsWith('+62')) return Swal.fire("Format salah", "Gunakan format +62 untuk nomor Indonesia.", "warning");
+
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
+
+      signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
+        .then(result => {
+          confirmationResult = result;
+          document.getElementById('otpCode').style.display = 'block';
+          document.getElementById('verifyBtn').style.display = 'block';
+          Swal.fire("OTP Dikirim", "Kode OTP telah dikirim ke nomor kamu", "success");
+        })
+        .catch(err => Swal.fire("Gagal", err.message, "error"));
+    };
+
+    window.verifyOTP = () => {
+      const code = document.getElementById('otpCode').value;
+      if (!code) return Swal.fire("Error", "Masukkan kode OTP.", "warning");
+
+      confirmationResult.confirm(code)
+        .then(() => {
+          Swal.fire("Berhasil", "Nomor kamu berhasil diverifikasi!", "success")
+            .then(() => location.href = "/home");
+        })
+        .catch(err => Swal.fire("Gagal", err.message, "error"));
+    };
+
+    // --- RESET PASSWORD (EMAIL / NOMOR) ---
+    window.chooseReset = async () => {
+      const { value: type } = await Swal.fire({
+        title: "Pilih metode reset password",
+        input: "radio",
+        inputOptions: {
+          email: "Lewat Email",
+          phone: "Lewat Nomor Telepon"
+        },
+        inputValidator: (value) => {
+          if (!value) return "Pilih salah satu metode!";
+        },
+        confirmButtonText: "Lanjutkan"
+      });
+
+      if (type === "email") resetByEmail();
+      else if (type === "phone") resetByPhone();
+    };
+
+    async function resetByEmail() {
+      const { value: email } = await Swal.fire({
+        title: 'Reset Password',
+        input: 'email',
+        inputLabel: 'Masukkan email akun kamu',
+        inputPlaceholder: 'email@example.com',
+        confirmButtonText: 'Kirim Reset Link',
+        showCancelButton: true,
+        customClass: { input: 'swal2-input-custom' }
+      });
+
+      if (!email) return;
+
+      sendPasswordResetEmail(auth, email)
+        .then(() => Swal.fire("Email Terkirim", "Link reset password telah dikirim ke email kamu", "success"))
+        .catch(err => Swal.fire("Gagal", err.message, "error"));
     }
 
-// RESET PASSWORD VIA EMAIL
-window.forgotPassword = async () => {
-  const { value: email } = await Swal.fire({
-    title: 'Reset Password',
-    input: 'email',
-    inputLabel: 'Masukkan email akun kamu',
-    inputPlaceholder: 'email@example.com',
-    confirmButtonText: 'Kirim Reset Link',
-    showCancelButton: true,
-    customClass: {
-      input: 'swal2-input-custom'
-    },
-    inputAttributes: {
-      maxlength: 50,
-      autocapitalize: 'off',
-      autocorrect: 'off'
+    async function resetByPhone() {
+      const { value: phone } = await Swal.fire({
+        title: 'Reset via Nomor Telepon',
+        input: 'tel',
+        inputLabel: 'Masukkan nomor telepon (+62)',
+        inputPlaceholder: '+6281234567890',
+        confirmButtonText: 'Kirim OTP',
+        showCancelButton: true
+      });
+
+      if (!phone) return;
+      Swal.fire("Informasi", "Reset via nomor telepon belum tersedia penuh. Fitur ini memerlukan verifikasi admin.", "info");
     }
-  });
-
-  if (!email) return;
-
-  sendPasswordResetEmail(auth, email)
-    .then(() => {
-      Swal.fire("Email Terkirim", "Link reset password telah dikirim ke email kamu", "success");
-    })
-    .catch(err => {
-      Swal.fire("Gagal", err.message, "error");
-    });
-}
   </script>
 </body>
-
 </html>

@@ -8,26 +8,31 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background-color: #1e1b4b;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
       color: #fff;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     .container {
-      width: 70%;
-      max-width: 400px;
+      width: 90%;
+      max-width: 420px;
       background: #fff;
       color: #111;
       border-radius: 24px;
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      padding: 2.2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
     h2 {
       margin-top: 0;
@@ -47,88 +52,165 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      margin-top: 0.5rem;
     }
     button {
       width: 100%;
-      background-color: #1e1b4b;
+      background: linear-gradient(135deg, #1e1b4b, #3b3dbf);
       color: white;
       border: none;
-      padding: 0.75rem;
+      padding: 0.8rem;
       border-radius: 12px;
       font-size: 1rem;
       margin-top: 1rem;
       cursor: pointer;
+      transition: 0.3s;
     }
     button:hover {
-      background-color: #2a255d;
+      transform: scale(1.03);
+      background: linear-gradient(135deg, #2924a3, #4338ca);
     }
     .google-btn {
-      background: white;
+      background: #fff;
       color: #111;
       border: 1px solid #ccc;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
+      font-weight: 500;
+    }
+    .google-btn:hover {
+      background: #f5f5f5;
+      transform: scale(1.02);
     }
     .bottom-text {
       text-align: center;
       font-size: 0.9rem;
       margin-top: 1rem;
     }
+    .divider {
+      text-align: center;
+      margin: 1.2rem 0;
+      color: #666;
+      font-size: 0.9rem;
+      position: relative;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      position: absolute;
+      width: 40%;
+      height: 1px;
+      background: #ccc;
+      top: 50%;
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <h2>Let's Start</h2>
-    <input type="text" id="regName" placeholder="Full Name">
-    <input type="email" id="regEmail" placeholder="Email Address">
-    <input type="password" id="regPassword" placeholder="Password">
-    <label>
-      <input type="checkbox" required>
-      I agree to the Terms & Conditions and Privacy Policy
-    </label>
-    <button onclick="register()">Create Account</button>
+    <h2>Daftar Akun</h2>
+
+    <input type="text" id="regName" placeholder="Nama Lengkap">
+    <input type="email" id="regEmail" placeholder="Alamat Email">
+    <input type="password" id="regPassword" placeholder="Kata Sandi">
+
+    <label><input type="checkbox" required> Saya setuju dengan <a href="#" style="color:#1e1b4b; font-weight:600;">Syarat & Ketentuan</a></label>
+    <button onclick="register()">Daftar dengan Email</button>
+
+    <div class="divider">atau</div>
+
+    <input type="tel" id="regPhone" placeholder="+62xxxxxxxxxx">
+    <div id="recaptcha-container"></div>
+    <button onclick="sendOTP()">Kirim OTP</button>
+    <input type="text" id="otpCode" placeholder="Masukkan Kode OTP" style="display:none;">
+    <button id="verifyBtn" onclick="verifyOTP()" style="display:none;">Verifikasi Nomor</button>
+
+    <div class="divider">atau</div>
+
     <button class="google-btn" onclick="googleLogin()">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google"> Sign Up with Google
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="20" alt="Google"> Daftar dengan Google
     </button>
+
     <div class="bottom-text">
-      Already have an account? <a href="/login" style="color:#1e1b4b; font-weight: 600;">Sign In</a>
+      Sudah punya akun? <a href="/login" style="color:#1e1b4b; font-weight:600;">Masuk Sekarang</a>
     </div>
   </div>
 
   <script type="module">
     import { auth, db, provider } from '/firebase.js';
-    import { createUserWithEmailAndPassword, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      createUserWithEmailAndPassword,
+      signInWithPopup,
+      RecaptchaVerifier,
+      signInWithPhoneNumber
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    window.register = () => {
-      const name = document.getElementById('regName').value;
-      const email = document.getElementById('regEmail').value;
-      const password = document.getElementById('regPassword').value;
+    let confirmationResult;
 
-      if (!name || !email || !password) {
-        alert("Harap isi semua data!");
-        return;
-      }
+    // Email register
+    window.register = () => {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      if (!name || !email || !password) return alert("Isi semua data dengan benar!");
 
       createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          const user = userCredential.user;
+        .then(async (res) => {
+          const user = res.user;
           await setDoc(doc(db, "users", user.uid), {
             uid: user.uid,
-            email: user.email,
-            name: name,
+            email,
+            name,
             role: "user",
             createdAt: Date.now()
           });
+          alert("Akun berhasil dibuat!");
           location.href = "/home";
         })
-        .catch((err) => {
-          alert("Gagal Register: " + err.message);
-        });
-    }
+        .catch(err => alert("Gagal Register: " + err.message));
+    };
 
+    // OTP Register
+    window.sendOTP = () => {
+      const phone = document.getElementById('regPhone').value.trim();
+      if (!phone.startsWith('+62')) return alert('Gunakan format +62 untuk nomor Indonesia');
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
+
+      signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
+        .then(result => {
+          confirmationResult = result;
+          document.getElementById('otpCode').style.display = 'block';
+          document.getElementById('verifyBtn').style.display = 'block';
+          alert('OTP telah dikirim ke nomor kamu');
+        })
+        .catch(err => alert('Gagal mengirim OTP: ' + err.message));
+    };
+
+    window.verifyOTP = () => {
+      const code = document.getElementById('otpCode').value;
+      confirmationResult.confirm(code)
+        .then(async result => {
+          const user = result.user;
+          const name = document.getElementById('regName').value.trim() || "Pengguna Baru";
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            name,
+            phone: user.phoneNumber,
+            role: "user",
+            createdAt: Date.now()
+          });
+          alert("Nomor berhasil diverifikasi dan akun dibuat!");
+          location.href = "/home";
+        })
+        .catch(err => alert('Verifikasi gagal: ' + err.message));
+    };
+
+    // Google Register
     window.googleLogin = () => {
       signInWithPopup(auth, provider)
         .then(async (result) => {
@@ -143,7 +225,7 @@
           location.href = "/home";
         })
         .catch(err => alert("Login Google gagal: " + err.message));
-    }
+    };
   </script>
 </body>
 </html>

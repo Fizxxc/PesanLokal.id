@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,400 +7,335 @@
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-/* Reset & Base */
-html,
-body {
-  max-width: 100vw;
+/* === RESET & BASE === */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f9fafb;
+  color: #1f2937;
   overflow-x: hidden;
-  font-family: "Inter", sans-serif;
-  background: #1e1b4b;
-  color: #2d3748;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* Header */
+/* === HEADER === */
 .header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.8rem;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(229, 231, 235, 0.7);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  color: white;
+  padding: 1rem 2rem;
   position: sticky;
   top: 0;
-  z-index: 50;
-  animation: fadeDown 0.5s ease;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+/* === USER === */
 .user-info {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.8rem;
 }
-
 .user-info img {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  border: 2px solid #ffffff80;
   object-fit: cover;
-  border: 2px solid #e0e0e0;
   transition: transform 0.3s ease;
 }
+.user-info img:hover { transform: scale(1.07); }
+.user-info div span { color: #e0e7ff; font-weight: 600; }
 
-.user-info img:hover {
-  transform: scale(1.08);
+#authBtn {
+  background: #fff;
+  color: #4f46e5;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+#authBtn:hover { background: #f3f4f6; }
+
+/* === NOTIF === */
+.notif-icon img {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0) invert(1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.notif-icon img:hover { transform: scale(1.1); }
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  border-radius: 50%;
+  padding: 2px 5px;
 }
 
-/* Notifikasi Panel */
+/* === HERO === */
+#welcome {
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1556745757-8d76bdb6984b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  padding: 3rem 1.5rem;
+  color: white;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+#welcome h2 { font-size: 2rem; font-weight: 700; }
+#welcome p { font-size: 1.1rem; color: #f3f4f6; margin-top: 0.5rem; }
+
+/* === PRODUCTS === */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+.product-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); }
+.product-card img { width: 100%; height: 180px; object-fit: cover; }
+.product-card h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; font-weight: 600; color: #1e1b4b; text-align: center; }
+.product-card p { font-size: 0.95rem; color: #4b5563; text-align: center; margin-bottom: 1rem; }
+.product-card button {
+  display: block;
+  width: 85%;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.7rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.product-card button:hover { transform: scale(1.03); background: linear-gradient(135deg, #4338ca, #4f46e5); }
+
+/* === NOTIF PANEL === */
 .notif-panel {
   position: fixed;
   top: 80px;
   right: 20px;
-  width: 340px;
-  max-height: 420px;
+  width: 320px;
+  max-height: 400px;
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(229, 231, 235, 0.6);
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   padding: 1rem;
-  z-index: 1000;
   display: none;
-  animation: fadeIn 0.4s ease;
+  animation: fadeIn 0.3s ease;
 }
-
 .notif-item {
-  margin-bottom: 12px;
-  padding: 14px;
   background: #f9fafb;
-  border-left: 4px solid #6366f1;
-  border-radius: 10px;
-  font-size: 0.95rem;
+  border-left: 4px solid #4f46e5;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
   color: #374151;
-  transition: background 0.25s ease, transform 0.25s ease;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
 }
+.notif-item:hover { background: #eef2ff; }
 
-.notif-item:hover {
-  background: #eef2ff;
-  transform: translateX(4px);
-}
-
-/* Produk */
-.product-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.8rem;
-  padding: 1.8rem;
-}
-
-.product-card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 1.4rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.08);
-}
-
-.product-card img {
-  border-radius: 14px;
-  max-height: 200px;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-
-.product-card h3 {
-  font-size: 1.3rem;
-  margin: 0.6rem 0;
-  color: #1f2937;
-  font-weight: 600;
-}
-
-.product-card p {
-  font-size: 1rem;
-  color: #6b7280;
-  margin-bottom: 1.4rem;
-}
-
-.product-card button {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  color: #fff;
-  border: none;
-  padding: 0.85rem;
-  font-size: 1rem;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s ease, transform 0.25s ease;
-}
-
-.product-card button:hover {
-  background: linear-gradient(135deg, #4338ca, #4f46e5);
-  transform: scale(1.07);
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 1.5rem;
-  background: #1e1b4b;
-  color: #6b7280;
-  font-size: 0.95rem;
-  border-top: 1px solid #1e1b4b;
-}
-
-/* Popup Iklan */
+/* === POPUP ADS === */
 #popupAdBox {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  padding: 2rem 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
   z-index: 9999;
-  max-width: 90%;
-  width: 400px;
+  width: 90%;
+  max-width: 400px;
+  padding: 1.8rem 1.5rem;
   text-align: center;
-  animation: popupFadeIn 0.45s ease;
+  animation: popupFadeIn 0.4s ease;
 }
-
-#popupAdBox span#popupClose {
+#popupClose {
   position: absolute;
-  top: 14px;
-  right: 20px;
-  font-size: 1.8rem;
+  top: 10px;
+  right: 16px;
+  font-size: 1.5rem;
+  color: #6b7280;
   cursor: pointer;
-  color: #9ca3af;
-  transition: color 0.25s ease, transform 0.2s ease;
 }
-
-#popupAdBox span#popupClose:hover {
-  color: #1f2937;
-  transform: rotate(90deg);
-}
-
-#popupAdBox #popupContent {
-  margin-top: 1.2rem;
-  font-size: 1.1rem;
-  color: #374151;
-  line-height: 1.6;
-}
-
 #popupAdBox button {
-  margin-top: 1.2rem;
-  padding: 0.85rem 1.6rem;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #fff;
+  background: #ef4444;
+  color: white;
   border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  margin-top: 1rem;
   cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition: all 0.2s ease;
 }
+#popupAdBox button:hover { background: #dc2626; transform: scale(1.05); }
 
-#popupAdBox button:hover {
-  transform: scale(1.08);
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-}
-
-/* Info Update Bar */
+/* === UPDATE INFO BAR === */
 #updateInfoBar {
   display: none;
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(135deg, #4338ca, #3730a3);
+  background: linear-gradient(90deg, #4338ca, #6366f1);
   color: white;
   text-align: center;
-  padding: 1rem 1.2rem;
-  font-size: 1rem;
+  padding: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   z-index: 9998;
-  animation: slideUp 0.6s ease;
+  animation: slideUp 0.4s ease;
+}
+
+/* === MUSIC CONTROL === */
+#musicControl {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14px;
-}
-
-#updateInfoBar span#updateClose {
+  font-size: 1.3rem;
   cursor: pointer;
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #f9fafb;
-  transition: color 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease, background 0.3s ease;
+  z-index: 9999;
+}
+#musicControl:hover { background: #3730a3; transform: scale(1.1); }
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  background: #1e1b4b;
+  color: white;
+  padding: 1.5rem 1rem;
+  font-size: 0.9rem;
+  border-top: 4px solid #4f46e5;
 }
 
-#updateInfoBar span#updateClose:hover {
-  color: #d1d5db;
-  transform: scale(1.2);
-}
+/* === ANIMATIONS === */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popupFadeIn { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-/* Animasi */
-@keyframes popupFadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -40%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
+@media (max-width: 640px) {
+  .header-top { flex-direction: column; gap: 0.8rem; }
+  #welcome h2 { font-size: 1.5rem; }
+  .product-list { padding: 1rem; }
 }
-
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
   </style>
 </head>
 
 <body>
-  <div id="popupAdBox"
-    style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:1.5rem; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:9999; max-width:90%; width:360px; text-align:center;">
-    <span id="popupClose"
-      style="position:absolute; top:10px; right:15px; font-size:1.5rem; cursor:pointer;">&times;</span>
-    <div id="popupContent" style="margin-top:1rem; font-size:1rem; color:#333;"></div>
+  <!-- Popup Iklan -->
+  <div id="popupAdBox">
+    <span id="popupClose">&times;</span>
+    <div id="popupContent"></div>
   </div>
+
+  <!-- Header -->
   <div class="header-top">
     <div class="user-info">
       <img id="userPhoto" src="/assets/default-user.png" alt="User Photo">
       <div>
-        <div style="font-weight: 600;">Hi, <span id="userName">Pengguna</span></div>
-        <div style="font-size: 0.9rem; color: gray;" id="userEmail">Selamat datang kembali!</div>
+        <div>Hi, <span id="userName">Pengguna</span></div>
+        <div id="userEmail" style="font-size: 0.85rem;">Selamat datang kembali!</div>
       </div>
     </div>
-    <div style="display:flex; align-items:center; gap:1rem">
+    <div style="display:flex; align-items:center; gap:1rem; position:relative;">
       <button id="authBtn"></button>
       <div class="notif-icon" id="notifToggle">
-        <img src="/assets/bell.png" alt="Notifikasi" style="cursor:pointer;">
+        <img src="/assets/bell.png" alt="Notifikasi">
         <span class="badge" id="notifBadge" style="display:none;">!</span>
       </div>
     </div>
   </div>
 
+  <!-- Main -->
   <main>
     <section id="welcome">
-      <h2 style="color: white;">Selamat Datang di PesanLokal!</h2>
-      <p style="color: white;">Pilih dan pesan produk lokal favoritmu.</p>
+      <h2>Selamat Datang di PesanLokal!</h2>
+      <p>Pilih dan pesan produk lokal favoritmu dengan mudah.</p>
     </section>
     <div id="productList" class="product-list"></div>
   </main>
 
+  <!-- Notif Panel -->
   <div class="notif-panel" id="notifPanel"></div>
-  <div id="updateInfoBar"
-    style="display:none; position:fixed; bottom:0; width:100%; background:#1e1b4b; color:white; text-align:center; padding:0.75rem; font-size:0.95rem; z-index:9998;">
-  </div>
 
+  <!-- Update Info -->
+  <div id="updateInfoBar"></div>
+
+  <!-- Music Control -->
+  <div id="musicControl" title="Klik untuk pause/resume 🎵">🎵</div>
+
+  <!-- Footer -->
   <footer>
-    <p style="font-size: 0.8rem; color: #ffffff;">&copy; 2025 PesanLokal.id</p>
-    <p style="font-size: 1.2rem; color: #ffffff;">Cek Update web <a style="color: red;" href="https://info-digicraft.vercel.app/info.html"
-        target="_blank">Disini</a></p>
+    <p>&copy; 2025 PesanLokal.id — Powered by DigiCraft</p>
+    <p>Cek update web <a href="https://info-digicraft.vercel.app/info.html" target="_blank" style="color:#f87171;">Disini</a></p>
   </footer>
 
+  <!-- SCRIPT -->
   <script type="module">
     import { auth, db } from '/firebase.js';
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import {
-      collection,
-      getDocs,
-      addDoc,
-      doc,
-      getDoc,
-      onSnapshot,
-      updateDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { collection, getDocs, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+    const authBtn=document.getElementById('authBtn'),
+          userPhoto=document.getElementById('userPhoto'),
+          userName=document.getElementById('userName'),
+          userEmail=document.getElementById('userEmail'),
+          notifPanel=document.getElementById('notifPanel'),
+          notifBadge=document.getElementById('notifBadge'),
+          notifToggle=document.getElementById('notifToggle'),
+          productList=document.getElementById('productList'),
+          popupAdBox=document.getElementById('popupAdBox'),
+          popupContent=document.getElementById('popupContent'),
+          popupClose=document.getElementById('popupClose'),
+          updateInfoBar=document.getElementById('updateInfoBar'),
+          musicControl=document.getElementById('musicControl');
 
-    const authBtn = document.getElementById('authBtn');
-    const userPhoto = document.getElementById('userPhoto');
-    const userName = document.getElementById('userName');
-    const userEmail = document.getElementById('userEmail');
-    const notifPanel = document.getElementById('notifPanel');
-    const notifBadge = document.getElementById('notifBadge');
-    const notifToggle = document.getElementById('notifToggle');
-    const productList = document.getElementById('productList');
-    const popupAdBox = document.getElementById('popupAdBox');
-    const popupContent = document.getElementById('popupContent');
-    const popupClose = document.getElementById('popupClose');
-    const updateInfoBar = document.getElementById('updateInfoBar');
+    let currentUser=null;
+    const products=[{name:"Es Teh",price:3000},{name:"Teajus",price:1000},{name:"Martel",price:"2000 - 10000"},{name:"Cilor",price:"2000 - 10000"},{name:"Mie Goreng",price:6000},{name:"Mie Kuah",price:6000}];
 
-    let currentUser = null;
-
-    const products = [
-      { name: "Es Teh", price: 3000 },
-      { name: "Teajus", price: 1000 },
-      { name: "Martel", price: "2000 - 10000" },
-      { name: "Cilor", price: "2000 - 10000" },
-      { name: "Mie Goreng", price: 6000 },
-      { name: "Mie Kuah", price: 6000 }
-    ];
-
-    function renderProducts() {
-      productList.innerHTML = "";
-      products.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-
-        const title = document.createElement('h3');
-        title.textContent = p.name;
-
-        const price = document.createElement('p');
-        price.textContent = `Rp ${p.price.toLocaleString('id-ID')}`;
-
-        const button = document.createElement('button');
-        button.textContent = 'Pesan';
-        button.onclick = () => {
-          if (!currentUser) {
-            Swal.fire('Kamu Belum Login', 'Silakan login dulu buat pesan', 'warning');
-          } else {
-            orderProduct(p.name);
-          }
-        };
-
+    function renderProducts(){
+      productList.innerHTML="";
+      products.forEach(p=>{
+        const card=document.createElement('div');
+        card.className='product-card';
+        const title=document.createElement('h3');
+        title.textContent=p.name;
+        const price=document.createElement('p');
+        price.textContent=`Rp ${p.price.toLocaleString('id-ID')}`;
+        const button=document.createElement('button');
+        button.textContent='Pesan';
+        button.onclick=()=>{if(!currentUser){Swal.fire('Kamu Belum Login','Silakan login dulu buat pesan','warning')}else{orderProduct(p.name)}};
         card.appendChild(title);
         card.appendChild(price);
         card.appendChild(button);
@@ -409,83 +343,86 @@ footer {
       });
     }
 
-
-    async function orderProduct(productName) {
-      const { value: note } = await Swal.fire({
-        title: `Pesan ${productName}`,
-        input: 'textarea',
-        inputLabel: 'Catatan (opsional)',
-        inputPlaceholder: 'Tulis catatan di sini...'
-      });
-      if (note !== undefined) {
-        await addDoc(collection(db, "orders"), {
-          product: productName,
-          user: currentUser.uid,
-          note: note || "",
-          timestamp: Date.now()
-        });
-        Swal.fire('Pesanan berhasil dikirim!', '', 'success');
+    async function orderProduct(productName){
+      const{value:note}=await Swal.fire({title:`Pesan ${productName}`,input:'textarea',inputLabel:'Catatan (opsional)',inputPlaceholder:'Tulis catatan di sini...'});
+      if(note!==undefined){
+        await addDoc(collection(db,"orders"),{product:productName,user:currentUser.uid,note:note||"",timestamp:Date.now()});
+        Swal.fire('Pesanan berhasil dikirim!','','success');
       }
     }
 
-    notifToggle.onclick = () => {
-      notifPanel.style.display = notifPanel.style.display === "none" ? "block" : "none";
-    };
-
-    async function loadNotifications() {
-      const snapshot = await getDocs(collection(db, "notifications"));
-      notifPanel.innerHTML = "";
-      if (!snapshot.empty) notifBadge.style.display = "inline-block";
-      snapshot.forEach(doc => {
-        const div = document.createElement('div');
-        div.className = 'notif-item';
-        div.textContent = doc.data().text;
+    notifToggle.onclick=()=>{notifPanel.style.display=notifPanel.style.display==="none"?"block":"none"};
+    async function loadNotifications(){
+      const snapshot=await getDocs(collection(db,"notifications"));
+      notifPanel.innerHTML="";
+      if(!snapshot.empty)notifBadge.style.display="inline-block";
+      snapshot.forEach(doc=>{
+        const div=document.createElement('div');
+        div.className='notif-item';
+        div.textContent=doc.data().text;
         notifPanel.appendChild(div);
       });
     }
 
-    onAuthStateChanged(auth, user => {
-      currentUser = user;
-      if (user) {
-        userName.textContent = user.displayName || 'Pengguna';
-        userEmail.textContent = user.email;
-        if (user.photoURL) {
-          userPhoto.src = user.photoURL;
-        }
-        authBtn.innerText = "Logout";
-        authBtn.onclick = () => signOut(auth);
+    onAuthStateChanged(auth,user=>{
+      currentUser=user;
+      if(user){
+        userName.textContent=user.displayName||'Pengguna';
+        userEmail.textContent=user.email;
+        if(user.photoURL)userPhoto.src=user.photoURL;
+        authBtn.innerText="Logout";
+        authBtn.onclick=()=>signOut(auth);
         loadNotifications();
         renderProducts();
-      } else {
-        userName.textContent = "Pengguna";
-        userEmail.textContent = "Silakan login terlebih dahulu";
-        userPhoto.src = "/assets/default-profile.jpg";
-        authBtn.innerText = "Login";
-        authBtn.onclick = () => location.href = "/login";
+      }else{
+        userName.textContent="Pengguna";
+        userEmail.textContent="Silakan login terlebih dahulu";
+        userPhoto.src="/assets/default-profile.jpg";
+        authBtn.innerText="Login";
+        authBtn.onclick=()=>location.href="/login";
         renderProducts();
       }
     });
 
-    popupClose.onclick = () => popupAdBox.style.display = 'none';
-
-    onSnapshot(doc(db, "web_config", "public_info"), (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-
-        // Iklan popup
-        if (data.ads && data.ads.trim()) {
-          popupContent.innerHTML = data.ads;
-          popupAdBox.style.display = 'block';
-        }
-
-        // Info update
-        if (data.info && data.info.trim()) {
-          updateInfoBar.innerHTML = data.info;
-          updateInfoBar.style.display = 'block';
-        }
+    popupClose.onclick=()=>popupAdBox.style.display='none';
+    onSnapshot(doc(db,"web_config","public_info"),docSnap=>{
+      if(docSnap.exists()){
+        const data=docSnap.data();
+        if(data.ads&&data.ads.trim()){popupContent.innerHTML=data.ads;popupAdBox.style.display='block'}
+        if(data.info&&data.info.trim()){updateInfoBar.innerHTML=data.info;updateInfoBar.style.display='block'}
       }
     });
+
+    /* === 🎵 MUSIC PLAYER === */
+    const musicList = [
+      "/assets/music/track1.mp3",
+      "/assets/music/track2.mp3",
+      "/assets/music/track3.mp3"
+    ];
+    const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
+    const audio = new Audio(randomMusic);
+    audio.volume = 0.5;
+    audio.loop = true;
+
+    // Play otomatis setelah halaman siap (autoplay policy)
+    window.addEventListener('load', () => {
+      audio.play().catch(() => {
+        console.warn("Autoplay dicegah browser. Klik tombol 🎵 untuk memulai musik.");
+      });
+    });
+
+    // Tombol control musik
+    let isPlaying = true;
+    musicControl.onclick = () => {
+      if (isPlaying) {
+        audio.pause();
+        musicControl.textContent = "⏸️";
+      } else {
+        audio.play();
+        musicControl.textContent = "🎵";
+      }
+      isPlaying = !isPlaying;
+    };
   </script>
 </body>
-
 </html>
