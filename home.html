@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PesanLokal - Beranda</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
   <style>
-/* === RESET & BASE === */
-html, body {
-  margin: 0;
-  padding: 0;
+/* === BASE === */
+body {
   font-family: 'Inter', sans-serif;
+  margin: 0;
   background: #f9fafb;
   color: #1f2937;
   overflow-x: hidden;
@@ -27,11 +27,9 @@ html, body {
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1000;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-
-/* === USER === */
 .user-info {
   display: flex;
   align-items: center;
@@ -46,8 +44,8 @@ html, body {
   transition: transform 0.3s ease;
 }
 .user-info img:hover { transform: scale(1.07); }
-.user-info div span { color: #e0e7ff; font-weight: 600; }
 
+/* === BUTTONS === */
 #authBtn {
   background: #fff;
   color: #4f46e5;
@@ -56,7 +54,7 @@ html, body {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: 0.25s;
 }
 #authBtn:hover { background: #f3f4f6; }
 
@@ -66,7 +64,7 @@ html, body {
   height: 28px;
   filter: brightness(0) invert(1);
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: 0.2s;
 }
 .notif-icon img:hover { transform: scale(1.1); }
 .badge {
@@ -79,54 +77,6 @@ html, body {
   border-radius: 50%;
   padding: 2px 5px;
 }
-
-/* === HERO === */
-#welcome {
-  text-align: center;
-  background: url('https://images.unsplash.com/photo-1556745757-8d76bdb6984b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-  padding: 3rem 1.5rem;
-  color: white;
-  border-bottom-left-radius: 40px;
-  border-bottom-right-radius: 40px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-#welcome h2 { font-size: 2rem; font-weight: 700; }
-#welcome p { font-size: 1.1rem; color: #f3f4f6; margin-top: 0.5rem; }
-
-/* === PRODUCTS === */
-.product-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
-}
-.product-card {
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); }
-.product-card img { width: 100%; height: 180px; object-fit: cover; }
-.product-card h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; font-weight: 600; color: #1e1b4b; text-align: center; }
-.product-card p { font-size: 0.95rem; color: #4b5563; text-align: center; margin-bottom: 1rem; }
-.product-card button {
-  display: block;
-  width: 85%;
-  margin: 0 auto 1rem;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  border: none;
-  color: white;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 0.7rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-.product-card button:hover { transform: scale(1.03); background: linear-gradient(135deg, #4338ca, #4f46e5); }
 
 /* === NOTIF PANEL === */
 .notif-panel {
@@ -150,122 +100,153 @@ html, body {
   border-radius: 8px;
   margin-bottom: 0.6rem;
   color: #374151;
-  font-size: 0.9rem;
-  transition: all 0.25s ease;
+  cursor: pointer;
+  transition: 0.2s;
 }
 .notif-item:hover { background: #eef2ff; }
 
-/* === POPUP ADS === */
-#popupAdBox {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* === HERO === */
+#welcome {
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1556745757-8d76bdb6984b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  padding: 3rem 1.5rem;
+  color: white;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+#welcome h2 { font-size: 2rem; font-weight: 700; }
+
+/* === PRODUCT LIST === */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+.product-card {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-  z-index: 9999;
-  width: 90%;
-  max-width: 400px;
-  padding: 1.8rem 1.5rem;
-  text-align: center;
-  animation: popupFadeIn 0.4s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-#popupClose {
-  position: absolute;
-  top: 10px;
-  right: 16px;
-  font-size: 1.5rem;
-  color: #6b7280;
-  cursor: pointer;
-}
-#popupAdBox button {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 10px;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-#popupAdBox button:hover { background: #dc2626; transform: scale(1.05); }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); }
+.product-card h3, .product-card p { text-align: center; }
 
-/* === UPDATE INFO BAR === */
-#updateInfoBar {
-  display: none;
+/* === LIVE CHAT === */
+#chatButton {
   position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: linear-gradient(90deg, #4338ca, #6366f1);
+  bottom: 20px;
+  right: 90px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#chatButton:hover { transform: scale(1.1); }
+
+#chatBox {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 340px;
+  height: 420px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10000;
+}
+.chat-header {
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
   color: white;
-  text-align: center;
   padding: 0.9rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  z-index: 9998;
-  animation: slideUp 0.4s ease;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chat-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #f9fafb;
+}
+.message {
+  max-width: 80%;
+  margin-bottom: 10px;
+  padding: 0.7rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.bot { background: #eef2ff; align-self: flex-start; }
+.user { background: #4f46e5; color: white; align-self: flex-end; }
+.chat-input {
+  display: flex;
+  border-top: 1px solid #e5e7eb;
+}
+.chat-input input {
+  flex: 1;
+  border: none;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  outline: none;
+}
+.chat-input button {
+  background: #4f46e5;
+  border: none;
+  color: white;
+  padding: 0 1rem;
+  cursor: pointer;
 }
 
-/* === MUSIC CONTROL === */
+/* === MUSIC BUTTON === */
 #musicControl {
   position: fixed;
-  bottom: 80px;
+  bottom: 20px;
   right: 20px;
   background: #4f46e5;
   color: white;
   border-radius: 50%;
-  width: 52px;
-  height: 52px;
+  width: 55px;
+  height: 55px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   font-size: 1.3rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  transition: transform 0.2s ease, background 0.3s ease;
-  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: 0.3s;
 }
-#musicControl:hover { background: #3730a3; transform: scale(1.1); }
-
-/* === FOOTER === */
-footer {
-  text-align: center;
-  background: #1e1b4b;
-  color: white;
-  padding: 1.5rem 1rem;
-  font-size: 0.9rem;
-  border-top: 4px solid #4f46e5;
-}
+#musicControl:hover { transform: scale(1.1); }
 
 /* === ANIMATIONS === */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes popupFadeIn { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-@media (max-width: 640px) {
-  .header-top { flex-direction: column; gap: 0.8rem; }
-  #welcome h2 { font-size: 1.5rem; }
-  .product-list { padding: 1rem; }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px);} to { opacity: 1; transform: translateY(0);} }
   </style>
 </head>
 
 <body>
-  <!-- Popup Iklan -->
-  <div id="popupAdBox">
-    <span id="popupClose">&times;</span>
-    <div id="popupContent"></div>
-  </div>
-
-  <!-- Header -->
+  <!-- HEADER -->
   <div class="header-top">
     <div class="user-info">
-      <img id="userPhoto" src="/assets/default-user.png" alt="User Photo">
+      <img id="userPhoto" src="/assets/default-user.png" alt="User Photo" />
       <div>
         <div>Hi, <span id="userName">Pengguna</span></div>
-        <div id="userEmail" style="font-size: 0.85rem;">Selamat datang kembali!</div>
+        <div id="userEmail" style="font-size:0.85rem;">Selamat datang!</div>
       </div>
     </div>
     <div style="display:flex; align-items:center; gap:1rem; position:relative;">
@@ -277,35 +258,48 @@ footer {
     </div>
   </div>
 
-  <!-- Main -->
-  <main>
-    <section id="welcome">
-      <h2>Selamat Datang di PesanLokal!</h2>
-      <p>Pilih dan pesan produk lokal favoritmu dengan mudah.</p>
-    </section>
-    <div id="productList" class="product-list"></div>
-  </main>
-
-  <!-- Notif Panel -->
+  <!-- NOTIF PANEL -->
   <div class="notif-panel" id="notifPanel"></div>
 
-  <!-- Update Info -->
-  <div id="updateInfoBar"></div>
+  <!-- HERO -->
+  <section id="welcome">
+    <h2>Selamat Datang di PesanLokal!</h2>
+    <p>Pilih dan pesan produk lokal favoritmu dengan mudah.</p>
+  </section>
 
-  <!-- Music Control -->
+  <div id="productList" class="product-list"></div>
+
+  <!-- LIVE CHAT BUTTON (LORDICON) -->
+  <button id="chatButton" title="Chat dengan PsL Service">
+    <lord-icon
+      src="https://cdn.lordicon.com/jdgfsfzr.json"
+      trigger="hover"
+      style="width:55px;height:55px">
+    </lord-icon>
+  </button>
+
+  <!-- LIVE CHAT BOX -->
+  <div id="chatBox">
+    <div class="chat-header">PsL Service <span style="cursor:pointer;" id="closeChat">✖</span></div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Ketik pesan..." />
+      <button id="sendChat">➤</button>
+    </div>
+  </div>
+
+  <!-- MUSIC -->
   <div id="musicControl" title="Klik untuk pause/resume 🎵">🎵</div>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 PesanLokal.id — Powered by DigiCraft</p>
-    <p>Cek update web <a href="https://info-digicraft.vercel.app/info.html" target="_blank" style="color:#f87171;">Disini</a></p>
+  <!-- FOOTER -->
+  <footer style="text-align:center; padding:1rem; background:#1e1b4b; color:white;">
+    &copy; 2025 PesanLokal.id — Powered by DigiCraft
   </footer>
 
-  <!-- SCRIPT -->
   <script type="module">
     import { auth, db } from '/firebase.js';
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { collection, getDocs, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const authBtn=document.getElementById('authBtn'),
           userPhoto=document.getElementById('userPhoto'),
@@ -314,52 +308,51 @@ footer {
           notifPanel=document.getElementById('notifPanel'),
           notifBadge=document.getElementById('notifBadge'),
           notifToggle=document.getElementById('notifToggle'),
+          chatButton=document.getElementById('chatButton'),
+          chatBox=document.getElementById('chatBox'),
+          closeChat=document.getElementById('closeChat'),
+          chatMessages=document.getElementById('chatMessages'),
+          chatInput=document.getElementById('chatInput'),
+          sendChat=document.getElementById('sendChat'),
           productList=document.getElementById('productList'),
-          popupAdBox=document.getElementById('popupAdBox'),
-          popupContent=document.getElementById('popupContent'),
-          popupClose=document.getElementById('popupClose'),
-          updateInfoBar=document.getElementById('updateInfoBar'),
           musicControl=document.getElementById('musicControl');
 
     let currentUser=null;
-    const products=[{name:"Es Teh",price:3000},{name:"Teajus",price:1000},{name:"Martel",price:"2000 - 10000"},{name:"Cilor",price:"2000 - 10000"},{name:"Mie Goreng",price:6000},{name:"Mie Kuah",price:6000}];
+    const products=[{name:"Es Teh",price:3000},{name:"Cilor",price:"2000 - 10000"},{name:"Mie Goreng",price:6000},{name:"Mie Kuah",price:6000}];
+    const botResponses={
+      "halo":"Hai! 👋 Ada yang bisa saya bantu?",
+      "harga":"Kamu bisa lihat harga di daftar produk ya 😊",
+      "buka":"Kami buka setiap hari jam 08.00 - 22.00 🕗",
+      "pesan":"Silakan pilih produk lalu tekan tombol 'Pesan' 💬",
+      "admin":"Tunggu sebentar, admin akan segera menghubungimu 🔔",
+      "terimakasih":"Sama-sama! 😊",
+      "thank":"Sama-sama! 😊",
+      "promo":"Lihat promo terbaru di dashboard atau tanya admin ya 🎁"
+    };
 
     function renderProducts(){
       productList.innerHTML="";
       products.forEach(p=>{
         const card=document.createElement('div');
         card.className='product-card';
-        const title=document.createElement('h3');
-        title.textContent=p.name;
-        const price=document.createElement('p');
-        price.textContent=`Rp ${p.price.toLocaleString('id-ID')}`;
-        const button=document.createElement('button');
-        button.textContent='Pesan';
-        button.onclick=()=>{if(!currentUser){Swal.fire('Kamu Belum Login','Silakan login dulu buat pesan','warning')}else{orderProduct(p.name)}};
-        card.appendChild(title);
-        card.appendChild(price);
-        card.appendChild(button);
+        card.innerHTML=`<h3>${p.name}</h3><p>Rp ${p.price}</p><button onclick="Swal.fire('Pesanan','Silakan login untuk memesan','info')">Pesan</button>`;
         productList.appendChild(card);
       });
     }
-
-    async function orderProduct(productName){
-      const{value:note}=await Swal.fire({title:`Pesan ${productName}`,input:'textarea',inputLabel:'Catatan (opsional)',inputPlaceholder:'Tulis catatan di sini...'});
-      if(note!==undefined){
-        await addDoc(collection(db,"orders"),{product:productName,user:currentUser.uid,note:note||"",timestamp:Date.now()});
-        Swal.fire('Pesanan berhasil dikirim!','','success');
-      }
-    }
+    renderProducts();
 
     notifToggle.onclick=()=>{notifPanel.style.display=notifPanel.style.display==="none"?"block":"none"};
+    notifPanel.onclick=()=>{notifPanel.style.display="none";notifBadge.style.display="none";};
+
     async function loadNotifications(){
-      const snapshot=await getDocs(collection(db,"notifications"));
+      const snap=await getDocs(collection(db,"notifications"));
       notifPanel.innerHTML="";
-      if(!snapshot.empty)notifBadge.style.display="inline-block";
-      snapshot.forEach(doc=>{
+      if(!snap.empty) notifBadge.style.display="inline-block";
+      snap.forEach(docSnap=>{
         const div=document.createElement('div');
         div.className='notif-item';
-        div.textContent=doc.data().text;
+        div.textContent=docSnap.data().text;
+        div.onclick=()=>{div.remove(); if(notifPanel.childElementCount===0) notifBadge.style.display="none";};
         notifPanel.appendChild(div);
       });
     }
@@ -367,62 +360,54 @@ footer {
     onAuthStateChanged(auth,user=>{
       currentUser=user;
       if(user){
-        userName.textContent=user.displayName||'Pengguna';
+        userName.textContent=user.displayName||"Pengguna";
         userEmail.textContent=user.email;
-        if(user.photoURL)userPhoto.src=user.photoURL;
         authBtn.innerText="Logout";
         authBtn.onclick=()=>signOut(auth);
         loadNotifications();
-        renderProducts();
-      }else{
+      } else {
         userName.textContent="Pengguna";
         userEmail.textContent="Silakan login terlebih dahulu";
-        userPhoto.src="/assets/default-profile.jpg";
         authBtn.innerText="Login";
         authBtn.onclick=()=>location.href="/login";
-        renderProducts();
       }
     });
 
-    popupClose.onclick=()=>popupAdBox.style.display='none';
-    onSnapshot(doc(db,"web_config","public_info"),docSnap=>{
-      if(docSnap.exists()){
-        const data=docSnap.data();
-        if(data.ads&&data.ads.trim()){popupContent.innerHTML=data.ads;popupAdBox.style.display='block'}
-        if(data.info&&data.info.trim()){updateInfoBar.innerHTML=data.info;updateInfoBar.style.display='block'}
+    /* === Chat === */
+    chatButton.onclick=()=>chatBox.style.display="flex";
+    closeChat.onclick=()=>chatBox.style.display="none";
+    sendChat.onclick=sendMessage;
+    chatInput.addEventListener("keypress",e=>{if(e.key==="Enter")sendMessage()});
+
+    function appendMessage(sender,text){
+      const msg=document.createElement('div');
+      msg.className=`message ${sender}`;
+      msg.textContent=text;
+      chatMessages.appendChild(msg);
+      chatMessages.scrollTop=chatMessages.scrollHeight;
+    }
+
+    async function sendMessage(){
+      const text=chatInput.value.trim().toLowerCase();
+      if(!text) return;
+      appendMessage("user",text);
+      chatInput.value="";
+      const response=Object.keys(botResponses).find(k=>text.includes(k));
+      setTimeout(()=>{
+        appendMessage("bot",response?botResponses[response]:"Maaf, saya belum paham. Ketik 'admin' jika butuh bantuan langsung 🙏");
+      },600);
+      if(currentUser){
+        await addDoc(collection(db,"chat_logs"),{uid:currentUser.uid,message:text,from:"user",timestamp:Date.now()});
       }
-    });
+    }
 
-    /* === 🎵 MUSIC PLAYER === */
-    const musicList = [
-      "/assets/music/track1.mp3",
-      "/assets/music/track2.mp3",
-      "/assets/music/track3.mp3"
-    ];
-    const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
-    const audio = new Audio(randomMusic);
-    audio.volume = 0.5;
-    audio.loop = true;
-
-    // Play otomatis setelah halaman siap (autoplay policy)
-    window.addEventListener('load', () => {
-      audio.play().catch(() => {
-        console.warn("Autoplay dicegah browser. Klik tombol 🎵 untuk memulai musik.");
-      });
-    });
-
-    // Tombol control musik
-    let isPlaying = true;
-    musicControl.onclick = () => {
-      if (isPlaying) {
-        audio.pause();
-        musicControl.textContent = "⏸️";
-      } else {
-        audio.play();
-        musicControl.textContent = "🎵";
-      }
-      isPlaying = !isPlaying;
-    };
+    /* === MUSIC === */
+    const musicList=["/assets/music/track1.mp3","/assets/music/track2.mp3"];
+    const audio=new Audio(musicList[Math.floor(Math.random()*musicList.length)]);
+    audio.loop=true; audio.volume=0.5;
+    window.addEventListener("load",()=>audio.play().catch(()=>{}));
+    let isPlay=true;
+    musicControl.onclick=()=>{if(isPlay){audio.pause();musicControl.textContent="⏸️"}else{audio.play();musicControl.textContent="🎵"}isPlay=!isPlay;}
   </script>
 </body>
 </html>

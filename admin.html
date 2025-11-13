@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -16,8 +17,11 @@
 
   <style>
     /* ====== BASE RESET ====== */
-    * { box-sizing: border-box; }
-    :root{
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
       --primary-600: #4f46e5;
       --primary-500: #6366f1;
       --accent: #ef4444;
@@ -25,109 +29,352 @@
       --card-bg: #ffffff;
       --surface: #f8fafc;
     }
-    html,body{margin:0;padding:0;font-family:Inter,Segoe UI,system-ui,-apple-system,Roboto,"Helvetica Neue",Arial;color:#0f172a;background: #f3f4f6;min-height:100vh;}
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Segoe UI, system-ui, -apple-system, Roboto, "Helvetica Neue", Arial;
+      color: #0f172a;
+      background: #f3f4f6;
+      min-height: 100vh;
+    }
 
     /* ====== LAYOUT ====== */
-    .sidebar{
-      position: fixed; left:0; top:0; bottom:0; width:260px;
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
       background: linear-gradient(180deg, var(--primary-600), var(--primary-500));
-      color:#fff; padding:28px 18px; display:flex; flex-direction:column; gap:18px; box-shadow:3px 0 20px rgba(15,23,42,0.12);
-      z-index:1100;
-    }
-    .brand{font-weight:700;font-size:18px;letter-spacing:0.4px;text-align:center;margin-bottom:6px}
-    .nav{
-      display:flex; flex-direction:column; gap:6px;
-    }
-    .nav-link{
-      display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px;
-      color:rgba(255,255,255,0.95); text-decoration:none; font-weight:600; font-size:14px; cursor:pointer;
-      transition:all .18s ease;
-    }
-    .nav-link i{font-size:18px}
-    .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.08); transform:translateX(4px); }
-
-    .sidebar .spacer{flex:1}
-
-    .logout-btn{ background:#fff; color:var(--primary-600); padding:10px 12px; border-radius:10px; border:none; font-weight:700; cursor:pointer; }
-
-    .main{
-      margin-left:260px; padding:28px; transition:margin .2s ease;
+      color: #fff;
+      padding: 28px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 3px 0 20px rgba(15, 23, 42, 0.12);
+      z-index: 1100;
     }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;
+    .brand {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.4px;
+      text-align: center;
+      margin-bottom: 6px
     }
-    header h1{ margin:0; font-size:20px; color:#0f172a; font-weight:700; }
-    .top-actions{display:flex; align-items:center; gap:12px;}
-    .top-actions .chip{ background:var(--card-bg); padding:8px 12px; border-radius:999px; box-shadow:0 6px 16px rgba(15,23,42,0.06); font-weight:600; color:#0f172a}
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.95);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .nav-link i {
+      font-size: 18px
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(4px);
+    }
+
+    .sidebar .spacer {
+      flex: 1
+    }
+
+    .logout-btn {
+      background: #fff;
+      color: var(--primary-600);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .main {
+      margin-left: 260px;
+      padding: 28px;
+      transition: margin .2s ease;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-actions .chip {
+      background: var(--card-bg);
+      padding: 8px 12px;
+      border-radius: 999px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      font-weight: 600;
+      color: #0f172a
+    }
 
     /* GRID */
     .grid {
-      display:grid;
+      display: grid;
       grid-template-columns: 1fr 420px;
-      gap:18px;
+      gap: 18px;
     }
+
     .cols-3 {
-      display:grid;
+      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap:16px;
+      gap: 16px;
     }
 
     /* CARD */
-    .card{
-      background:var(--card-bg); border-radius:12px; padding:16px; box-shadow:0 8px 24px rgba(15,23,42,0.06);
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     }
-    .card h3{ margin:0 0 12px; font-size:16px; color:#0f172a; }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: #0f172a;
+    }
 
     /* ORDERS TABLE */
-    .orders-table{ width:100%; border-collapse:collapse; }
-    .orders-table thead th{ text-align:left; padding:10px 8px; font-size:13px; color:var(--muted); font-weight:700; }
-    .orders-table tbody td{ padding:12px 8px; vertical-align:middle; border-top:1px solid #eef2f7; color:#0f172a; }
-    .order-card{ display:flex; gap:12px; align-items:center; }
-    .avatar-small{ width:44px; height:44px; border-radius:8px; background:linear-gradient(135deg,#eef2ff,#f0f9ff); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary-600); }
-    .order-meta{ font-size:13px; color:#374151 }
-    .badge{ display:inline-block; padding:6px 8px; border-radius:999px; font-weight:700; font-size:12px; color:white; }
-    .badge.pending{ background:#f59e0b; }
-    .badge.processing{ background:var(--primary-500); }
-    .badge.ready{ background:#10b981; }
-    .badge.done{ background:#6b7280; }
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-    .select-status{ padding:8px 10px; border-radius:8px; border:1px solid #e6e9ef; background:#fff; cursor:pointer; }
+    .orders-table thead th {
+      text-align: left;
+      padding: 10px 8px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .orders-table tbody td {
+      padding: 12px 8px;
+      vertical-align: middle;
+      border-top: 1px solid #eef2f7;
+      color: #0f172a;
+    }
+
+    .order-card {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .avatar-small {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #eef2ff, #f0f9ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--primary-600);
+    }
+
+    .order-meta {
+      font-size: 13px;
+      color: #374151
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      color: white;
+    }
+
+    .badge.pending {
+      background: #f59e0b;
+    }
+
+    .badge.processing {
+      background: var(--primary-500);
+    }
+
+    .badge.ready {
+      background: #10b981;
+    }
+
+    .badge.done {
+      background: #6b7280;
+    }
+
+    .select-status {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #e6e9ef;
+      background: #fff;
+      cursor: pointer;
+    }
 
     /* STATS & CHART */
-    .stats-row{display:flex; gap:12px;}
-    .stat{
-      flex:1; padding:12px; border-radius:12px; background:linear-gradient(180deg,#ffffff,#fbfdff); box-shadow:0 8px 20px rgba(2,6,23,0.04); display:flex; align-items:center; gap:12px;
+    .stats-row {
+      display: flex;
+      gap: 12px;
     }
-    .stat .num{ font-size:20px; font-weight:800; color:#0f172a }
-    .stat small{ color:var(--muted); display:block }
+
+    .stat {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stat .num {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a
+    }
+
+    .stat small {
+      color: var(--muted);
+      display: block
+    }
 
     /* SIDEBAR RIGHT (ads/info) */
-    .right-column{ display:flex; flex-direction:column; gap:12px; }
-    .popup-preview{ font-size:14px; color:#334155; line-height:1.4; }
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .popup-preview {
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.4;
+    }
 
     /* FORMS */
-    input, textarea, select{
-      width:100%; padding:10px 12px; border-radius:8px; border:1px solid #e6e9ef; font-size:14px; background:#fff;
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #e6e9ef;
+      font-size: 14px;
+      background: #fff;
     }
-    textarea{ min-height:110px; resize:vertical; }
 
-    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:none; color:#fff; background:linear-gradient(135deg,var(--primary-600),var(--primary-500)); cursor:pointer; font-weight:700; }
-    .btn.ghost{ background:transparent; color:var(--primary-600); border:1px solid rgba(79,70,229,0.12) }
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--primary-600);
+      border: 1px solid rgba(79, 70, 229, 0.12)
+    }
 
     /* LOADING */
-    .loading-overlay{
-      position:fixed; inset:0; background: linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.4)); display:flex; align-items:center; justify-content:center; z-index:2000; color:white; flex-direction:column;
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(2, 6, 23, 0.6), rgba(2, 6, 23, 0.4));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      color: white;
+      flex-direction: column;
     }
 
     /* RESPONSIVE */
-    @media (max-width:1100px){
-      .grid{ grid-template-columns: 1fr; }
-      .cols-3{ grid-template-columns: 1fr; }
-      .main{ margin-left:0; padding:16px; }
+    @media (max-width:1100px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cols-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 16px;
+      }
+    }
+
+    .msg-admin {
+      background: #4f46e5;
+      color: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      margin: 4px;
+      align-self: flex-end;
+      max-width: 70%;
+    }
+
+    .msg-user {
+      background: #e5e7eb;
+      color: #111;
+      border-radius: 10px;
+      padding: 8px 10px;
+      margin: 4px;
+      align-self: flex-start;
+      max-width: 70%;
     }
   </style>
 </head>
+
 <body>
   <!-- Loading overlay -->
   <div class="loading-overlay" id="loadingOverlay">
@@ -146,6 +393,7 @@
       <div class="nav-link" data-view="promo"><i class="bi bi-tags"></i> Promo</div>
       <div class="nav-link" data-view="update"><i class="bi bi-info-circle"></i> Update Sistem</div>
       <div class="nav-link" data-view="ads"><i class="bi bi-badge-ad"></i> Iklan Popup</div>
+      <div class="nav-link" data-view="chat"><i class="bi bi-chat-dots"></i> PsL Service</div>
     </nav>
 
     <div class="spacer"></div>
@@ -227,7 +475,8 @@
     <!-- Orders View -->
     <section id="view-orders" class="card" style="display:none">
       <h3>Kelola Pesanan</h3>
-      <div style="margin-bottom:12px;color:var(--muted)">Gunakan dropdown untuk mengubah status dan beri notifikasi otomatis ke pengguna.</div>
+      <div style="margin-bottom:12px;color:var(--muted)">Gunakan dropdown untuk mengubah status dan beri notifikasi
+        otomatis ke pengguna.</div>
 
       <div style="overflow:auto">
         <table class="orders-table" id="ordersTable" style="width:100%">
@@ -285,7 +534,8 @@
   </main>
 
   <!-- Popup Iklan (global) -->
-  <div id="popupAdBox" style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; z-index:2500;">
+  <div id="popupAdBox"
+    style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; z-index:2500;">
     <div style="background:rgba(0,0,0,0.35); position:absolute; inset:0;"></div>
     <div style="position:relative; width:90%; max-width:600px; margin:auto;">
       <div style="background:#fff; border-radius:12px; padding:20px 18px; box-shadow:0 18px 50px rgba(2,6,23,0.35);">
@@ -296,6 +546,25 @@
       </div>
     </div>
   </div>
+
+  <!-- PsL Service (Live Chat) View -->
+  <section id="view-chat" class="card" style="display:none">
+    <h3>PsL Service (Live Chat)</h3>
+    <div style="display:flex;gap:16px;">
+      <div id="chatUserList"
+        style="width:260px;max-height:460px;overflow:auto;background:#f9fafb;border-radius:10px;padding:8px;"></div>
+      <div
+        style="flex:1;display:flex;flex-direction:column;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.05);">
+        <div id="chatBox" style="flex:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;"></div>
+        <div style="display:flex;border-top:1px solid #ddd;">
+          <input id="chatInput" placeholder="Ketik pesan..."
+            style="flex:1;border:none;padding:10px;font-size:14px;outline:none;">
+          <button id="chatSend" style="background:#4f46e5;color:#fff;border:none;padding:0 16px;cursor:pointer;"><i
+              class="bi bi-send"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Toast container -->
   <div id="toastContainer" style="position:fixed; bottom:18px; right:18px; z-index:3000"></div>
@@ -360,26 +629,26 @@
     // logout
     window.logout = () => {
       signOut(auth).then(() => {
-        Swal.fire('Logout berhasil','Anda akan diarahkan ke halaman login','success').then(()=> location.href='/login');
+        Swal.fire('Logout berhasil', 'Anda akan diarahkan ke halaman login', 'success').then(() => location.href = '/login');
       });
     };
 
     // clock
     function updateClock() {
       const now = new Date();
-      clockEl.textContent = now.toLocaleString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      clockEl.textContent = now.toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
     setInterval(updateClock, 1000);
     updateClock();
 
     // show toast
-    function showToast(msg, timeout=3500) {
+    function showToast(msg, timeout = 3500) {
       const el = document.createElement('div');
       el.className = 'toast';
       el.style.cssText = 'background:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,0.12);margin-top:8px;';
       el.textContent = msg;
       toastContainer.appendChild(el);
-      setTimeout(()=> el.remove(), timeout);
+      setTimeout(() => el.remove(), timeout);
     }
 
     // Firestore listeners: config
@@ -434,15 +703,15 @@
         const d = docItem.data();
         const root = document.createElement('div');
         root.style.cssText = 'display:flex; gap:12px; align-items:center; padding:10px 0; border-bottom:1px dashed #eef2f7';
-        const avatar = document.createElement('div'); avatar.className='avatar-small'; avatar.textContent = d.product?.slice(0,1) || 'P';
-        const meta = document.createElement('div'); meta.style.flex='1';
+        const avatar = document.createElement('div'); avatar.className = 'avatar-small'; avatar.textContent = d.product?.slice(0, 1) || 'P';
+        const meta = document.createElement('div'); meta.style.flex = '1';
         const title = document.createElement('div'); title.textContent = `${d.product} — ${d.note || '-'}`; title.style.fontWeight = 700;
-        const sub = document.createElement('div'); sub.style.fontSize='12px'; sub.style.color='#6b7280';
+        const sub = document.createElement('div'); sub.style.fontSize = '12px'; sub.style.color = '#6b7280';
         sub.textContent = (d.user || '-') + ' · ' + new Date(d.timestamp).toLocaleString();
         meta.appendChild(title); meta.appendChild(sub);
         const status = document.createElement('div');
-        const s = (d.status||'Pending').toLowerCase();
-        const span = document.createElement('span'); span.className = 'badge ' + ( s.includes('sedang') ? 'processing' : s.includes('siap') ? 'ready' : s.includes('selesai')||s.includes('done') ? 'done' : 'pending');
+        const s = (d.status || 'Pending').toLowerCase();
+        const span = document.createElement('span'); span.className = 'badge ' + (s.includes('sedang') ? 'processing' : s.includes('siap') ? 'ready' : s.includes('selesai') || s.includes('done') ? 'done' : 'pending');
         span.textContent = d.status || 'Pending';
         status.appendChild(span);
         root.appendChild(avatar); root.appendChild(meta); root.appendChild(status);
@@ -453,7 +722,7 @@
     function formatDate(ts) {
       try {
         return new Date(ts).toLocaleString();
-      } catch(e) { return '-'; }
+      } catch (e) { return '-'; }
     }
 
     function renderOrdersTable(docs) {
@@ -464,18 +733,18 @@
 
         // Pesanan
         const td1 = document.createElement('td');
-        td1.innerHTML = `<div class="order-card"><div class="avatar-small">${(d.product||'P').slice(0,1)}</div><div style="margin-left:10px"><div style="font-weight:700">${d.product}</div><div class="order-meta">${d.note||'-'}</div></div></div>`;
+        td1.innerHTML = `<div class="order-card"><div class="avatar-small">${(d.product || 'P').slice(0, 1)}</div><div style="margin-left:10px"><div style="font-weight:700">${d.product}</div><div class="order-meta">${d.note || '-'}</div></div></div>`;
         // Pelanggan
         const td2 = document.createElement('td'); td2.textContent = d.user || '-';
         // Tanggal
         const td3 = document.createElement('td'); td3.textContent = formatDate(d.timestamp);
         // Status
         const td4 = document.createElement('td');
-        const statusLower = (d.status||'Pending').toLowerCase();
+        const statusLower = (d.status || 'Pending').toLowerCase();
         let cls = 'pending';
-        if (statusLower.includes('sedang')) cls='processing';
-        else if (statusLower.includes('siap')) cls='ready';
-        else if (statusLower.includes('selesai') || statusLower.includes('done')) cls='done';
+        if (statusLower.includes('sedang')) cls = 'processing';
+        else if (statusLower.includes('siap')) cls = 'ready';
+        else if (statusLower.includes('selesai') || statusLower.includes('done')) cls = 'done';
         td4.innerHTML = `<span class="badge ${cls}">${d.status || 'Pending'}</span>`;
         // Aksi
         const td5 = document.createElement('td');
@@ -518,38 +787,38 @@
     window.updateStatus = updateStatus; // expose if used elsewhere
 
     // Broadcast / Promo / Update / Ads functions
-    async function sendBroadcast(){
+    async function sendBroadcast() {
       const text = document.getElementById('broadcast').value.trim();
-      if (!text) return Swal.fire('Pesan kosong','Masukkan info sebelum mengirim','warning');
-      await addDoc(collection(db,"notifications"), { text, timestamp: Date.now() });
-      Swal.fire('Terkirim','Broadcast berhasil dikirim','success');
+      if (!text) return Swal.fire('Pesan kosong', 'Masukkan info sebelum mengirim', 'warning');
+      await addDoc(collection(db, "notifications"), { text, timestamp: Date.now() });
+      Swal.fire('Terkirim', 'Broadcast berhasil dikirim', 'success');
       document.getElementById('broadcast').value = '';
     }
     window.sendBroadcast = sendBroadcast;
 
-    async function addPromo(){
+    async function addPromo() {
       const title = document.getElementById('promoTitle').value.trim();
       const desc = document.getElementById('promoDesc').value.trim();
-      if(!title || !desc) return Swal.fire('Lengkapi data','Judul dan deskripsi wajib diisi','warning');
-      await addDoc(collection(db,"promos"), { title, desc, timestamp: Date.now() });
-      Swal.fire('Sukses','Promo ditambahkan','success');
-      document.getElementById('promoTitle').value=''; document.getElementById('promoDesc').value='';
+      if (!title || !desc) return Swal.fire('Lengkapi data', 'Judul dan deskripsi wajib diisi', 'warning');
+      await addDoc(collection(db, "promos"), { title, desc, timestamp: Date.now() });
+      Swal.fire('Sukses', 'Promo ditambahkan', 'success');
+      document.getElementById('promoTitle').value = ''; document.getElementById('promoDesc').value = '';
     }
     window.addPromo = addPromo;
 
-    async function saveUpdateInfo(){
+    async function saveUpdateInfo() {
       const text = document.getElementById('updateInfo').value.trim();
-      await setDoc(doc(db,"web_config","public_info"), { info: text }, { merge:true });
-      Swal.fire('Sukses','Info update disimpan','success');
-      document.getElementById('updateInfo').value='';
+      await setDoc(doc(db, "web_config", "public_info"), { info: text }, { merge: true });
+      Swal.fire('Sukses', 'Info update disimpan', 'success');
+      document.getElementById('updateInfo').value = '';
     }
     window.saveUpdateInfo = saveUpdateInfo;
 
-    async function savePopupAd(){
+    async function savePopupAd() {
       const text = document.getElementById('popupAd').value.trim();
-      await setDoc(doc(db,"web_config","public_info"), { ads: text }, { merge:true });
-      Swal.fire('Sukses','Iklan popup disimpan','success');
-      document.getElementById('popupAd').value='';
+      await setDoc(doc(db, "web_config", "public_info"), { ads: text }, { merge: true });
+      Swal.fire('Sukses', 'Iklan popup disimpan', 'success');
+      document.getElementById('popupAd').value = '';
     }
     window.savePopupAd = savePopupAd;
 
@@ -568,13 +837,13 @@
           }]
         },
         options: {
-          responsive:true,
-          maintainAspectRatio:false,
+          responsive: true,
+          maintainAspectRatio: false,
           scales: {
-            x: { grid: { display:false } },
-            y: { beginAtZero:true, ticks: { stepSize:1 } }
+            x: { grid: { display: false } },
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
           },
-          plugins: { legend:{ display:false } }
+          plugins: { legend: { display: false } }
         }
       });
     }
@@ -582,17 +851,17 @@
     function updateChartData(orderDocs) {
       // group by day (last 7 days)
       const now = new Date();
-      const days = Array.from({length:7}).map((_,i) => {
+      const days = Array.from({ length: 7 }).map((_, i) => {
         const d = new Date(now);
         d.setDate(now.getDate() - (6 - i));
-        d.setHours(0,0,0,0);
+        d.setHours(0, 0, 0, 0);
         return d;
       });
-      const labels = days.map(d => d.toLocaleDateString('id-ID', { day:'2-digit', month:'short' }));
+      const labels = days.map(d => d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }));
       const counts = days.map(dayStart => {
-        const dayEnd = new Date(dayStart); dayEnd.setDate(dayEnd.getDate()+1);
+        const dayEnd = new Date(dayStart); dayEnd.setDate(dayEnd.getDate() + 1);
         let cnt = 0;
-        orderDocs.forEach(docItem=>{
+        orderDocs.forEach(docItem => {
           const ts = docItem.data().timestamp;
           if (!ts) return;
           const t = new Date(ts);
@@ -620,7 +889,7 @@
 
         // stats
         statTotalOrders.textContent = docs.length;
-        const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+        const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
         const todayCount = docs.filter(d => (d.data().timestamp || 0) >= todayStart.getTime()).length;
         statTodayOrders.textContent = todayCount;
         const openCount = docs.filter(d => {
@@ -643,7 +912,7 @@
     // get admin name and check role
     onAuthStateChanged(auth, async user => {
       if (!user) {
-        Swal.fire('Akses ditolak','Silakan login terlebih dahulu','error').then(()=> location.href='/login');
+        Swal.fire('Akses ditolak', 'Silakan login terlebih dahulu', 'error').then(() => location.href = '/login');
         return;
       }
       currentUser = user;
@@ -653,7 +922,7 @@
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (!userDoc.exists() || userDoc.data().role !== 'admin') {
-          Swal.fire('Akses ditolak','Kamu bukann atminn, Sana hus huss','error').then(()=> location.href='/home');
+          Swal.fire('Akses ditolak', 'Kamu bukann atminn, Sana hus huss', 'error').then(() => location.href = '/home');
           return;
         }
       } catch (e) {
@@ -665,15 +934,77 @@
       listenConfig();
       listenOrders();
       // hide loader (in case)
-      setTimeout(()=> loadingOverlay.style.display = 'none', 800);
+      setTimeout(() => loadingOverlay.style.display = 'none', 800);
     });
 
     // small UX helpers
-    document.addEventListener('click', (e)=>{
+    document.addEventListener('click', (e) => {
       // close popup if clicked on overlay
       if (e.target === popupAdBox) popupAdBox.style.display = 'none';
     });
 
+    // ==== PSL SERVICE CHAT ====
+    const chatUserList = document.getElementById('chatUserList');
+    const chatBox = document.getElementById('chatBox');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    let activeChatUID = null;
+
+    // tampilkan daftar user yg chat
+    function loadChatUsers() {
+      const q = query(collection(db, "chats"));
+      onSnapshot(q, snap => {
+        const users = new Set();
+        snap.forEach(doc => users.add(doc.data().uid));
+        chatUserList.innerHTML = "";
+        users.forEach(uid => {
+          const item = document.createElement("div");
+          item.textContent = uid;
+          item.style.cssText = "padding:8px;margin-bottom:6px;background:#fff;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;";
+          item.onclick = () => openChat(uid);
+          chatUserList.appendChild(item);
+        });
+      });
+    }
+
+    function openChat(uid) {
+      activeChatUID = uid;
+      chatBox.innerHTML = "";
+      const q = query(collection(db, "chats"), where("uid", "==", uid), orderBy("timestamp", "asc"));
+      onSnapshot(q, snap => {
+        chatBox.innerHTML = "";
+        snap.forEach(doc => {
+          const d = doc.data();
+          const msg = document.createElement("div");
+          msg.className = (d.from === "admin") ? "msg-admin" : "msg-user";
+          msg.textContent = d.message;
+          chatBox.appendChild(msg);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+
+    async function sendChatMessage() {
+      const text = chatInput.value.trim();
+      if (!text || !activeChatUID) return;
+      await addDoc(collection(db, "chats"), {
+        uid: activeChatUID,
+        from: "admin",
+        message: text,
+        timestamp: Date.now()
+      });
+      chatInput.value = "";
+    }
+    chatSend.onclick = sendChatMessage;
+    chatInput.addEventListener("keypress", e => { if (e.key === "Enter") sendChatMessage(); });
+
+    // inisialisasi setelah login
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        loadChatUsers();
+      }
+    });
   </script>
 </body>
+
 </html>
