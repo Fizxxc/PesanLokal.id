@@ -373,6 +373,31 @@
       align-self: flex-start;
       max-width: 70%;
     }
+    .hamburger {
+      display: none;
+      background: var(--card-bg);
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: none;
+      color: #0f172a;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #sidebarOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      z-index: 1099;
+    }
+    @media (max-width: 900px) {
+      .hamburger { display: inline-flex; align-items: center; gap: 8px; }
+      .sidebar { transform: translateX(-100%); transition: transform .25s ease; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .grid { grid-template-columns: 1fr; }
+      .right-column { width: 100%; }
+    }
   </style>
 </head>
 
@@ -401,10 +426,12 @@
 
     <button class="logout-btn" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
   </aside>
+  <div id="sidebarOverlay"></div>
 
   <!-- MAIN -->
   <main class="main">
     <header>
+      <button id="menuToggle" class="hamburger"><i class="bi bi-list"></i> Menu</button>
       <h1>Dashboard Admin</h1>
       <div class="top-actions">
         <div class="chip" id="clock">--</div>
@@ -626,6 +653,9 @@
     const scanOverlay = document.getElementById('scanOverlay');
     const openScanBtn = document.getElementById('openScanBtn');
     const closeScanBtn = document.getElementById('closeScanBtn');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
     let html5QrCode = null;
 
     let currentUser = null;
@@ -641,7 +671,20 @@
         Object.keys(views).forEach(k => views[k].style.display = (k === view ? '' : 'none'));
         // scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.innerWidth <= 900) {
+          sidebar.classList.remove('open');
+          sidebarOverlay.style.display = 'none';
+        }
       });
+    });
+    menuToggle.addEventListener('click', () => {
+      const wantOpen = !sidebar.classList.contains('open');
+      sidebar.classList.toggle('open', wantOpen);
+      sidebarOverlay.style.display = wantOpen ? 'block' : 'none';
+    });
+    sidebarOverlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      sidebarOverlay.style.display = 'none';
     });
 
     // logout
