@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
 /* === BASE === */
 body {
@@ -330,16 +331,19 @@ body {
       "promo":"Lihat promo terbaru di dashboard atau tanya admin ya 🎁"
     };
 
-    function renderProducts(){
+    function renderProducts(isLoggedIn=false){
       productList.innerHTML="";
       products.forEach(p=>{
         const card=document.createElement('div');
         card.className='product-card';
-        card.innerHTML=`<h3>${p.name}</h3><p>Rp ${p.price}</p><button onclick="Swal.fire('Pesanan','Silakan login untuk memesan','info')">Pesan</button>`;
+        const btn = isLoggedIn
+          ? `<button onclick="order('${p.name}','${p.price}')">Pesan</button>`
+          : `<button onclick="Swal.fire('Pesanan','Silakan login untuk memesan','info')">Pesan</button>`;
+        card.innerHTML=`<h3>${p.name}</h3><p>Rp ${p.price}</p>${btn}`;
         productList.appendChild(card);
       });
     }
-    renderProducts();
+    renderProducts(false);
 
     notifToggle.onclick=()=>{notifPanel.style.display=notifPanel.style.display==="none"?"block":"none"};
     notifPanel.onclick=()=>{notifPanel.style.display="none";notifBadge.style.display="none";};
@@ -365,11 +369,13 @@ body {
         authBtn.innerText="Logout";
         authBtn.onclick=()=>signOut(auth);
         loadNotifications();
+        renderProducts(true);
       } else {
         userName.textContent="Pengguna";
         userEmail.textContent="Silakan login terlebih dahulu";
         authBtn.innerText="Login";
         authBtn.onclick=()=>location.href="/login";
+        renderProducts(false);
       }
     });
 
@@ -402,12 +408,40 @@ body {
     }
 
     /* === MUSIC === */
-    const musicList=["/assets/music/track1.mp3","/assets/music/track2.mp3"];
+    const musicList=["/assets/music/track1.mp3"];
     const audio=new Audio(musicList[Math.floor(Math.random()*musicList.length)]);
     audio.loop=true; audio.volume=0.5;
     window.addEventListener("load",()=>audio.play().catch(()=>{}));
     let isPlay=true;
     musicControl.onclick=()=>{if(isPlay){audio.pause();musicControl.textContent="⏸️"}else{audio.play();musicControl.textContent="🎵"}isPlay=!isPlay;}
+
+    window.order = async (productName, price) => {
+      if(!currentUser){
+        Swal.fire('Pesanan','Silakan login untuk memesan','info');
+        return;
+      }
+      try{
+        const docRef = await addDoc(collection(db,"orders"),{
+          product: productName,
+          price: price,
+          timestamp: Date.now(),
+          uid: currentUser.uid,
+          user: currentUser.email || currentUser.displayName || "Pengguna",
+          status: "Pending"
+        });
+        const codeId = docRef.id;
+        await Swal.fire({
+          title: 'Kode Pesanan',
+          html: '<div id="qrCode" style="display:flex;justify-content:center;"></div><div style="margin-top:8px;font-size:12px;color:#6b7280">'+codeId+'</div>',
+          didOpen: () => {
+            new QRCode(document.getElementById('qrCode'), { text: codeId, width: 180, height: 180 });
+          },
+          confirmButtonText: 'OK'
+        });
+      }catch(err){
+        Swal.fire('Gagal', err.message, 'error');
+      }
+    };
   </script>
 </body>
 </html>

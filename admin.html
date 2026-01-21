@@ -14,6 +14,7 @@
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
     /* ====== BASE RESET ====== */
@@ -477,6 +478,18 @@
       <h3>Kelola Pesanan</h3>
       <div style="margin-bottom:12px;color:var(--muted)">Gunakan dropdown untuk mengubah status dan beri notifikasi
         otomatis ke pengguna.</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn" id="openScanBtn">Buka Scanner QR</button>
+      </div>
+      <div id="scanOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:4000;align-items:center;justify-content:center">
+        <div style="background:#fff;border-radius:12px;padding:16px;width:90%;max-width:520px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <h3 style="margin:0">Scan Kode Pesanan</h3>
+            <button class="btn ghost" id="closeScanBtn">Tutup</button>
+          </div>
+          <div id="qrScanner" style="width:100%"></div>
+        </div>
+      </div>
 
       <div style="overflow:auto">
         <table class="orders-table" id="ordersTable" style="width:100%">
@@ -610,6 +623,10 @@
     const notifSound = document.getElementById('notifSound');
     const clockEl = document.getElementById('clock');
     const adminName = document.getElementById('adminName');
+    const scanOverlay = document.getElementById('scanOverlay');
+    const openScanBtn = document.getElementById('openScanBtn');
+    const closeScanBtn = document.getElementById('closeScanBtn');
+    let html5QrCode = null;
 
     let currentUser = null;
     let ordersChart = null;
@@ -651,6 +668,70 @@
       toastContainer.appendChild(el);
       setTimeout(() => el.remove(), timeout);
     }
+
+    async function handleScan(decodedText) {
+      try {
+        if (html5QrCode) await html5QrCode.stop();
+      } catch (e) {}
+      scanOverlay.style.display = 'none';
+      const id = (decodedText || '').trim();
+      if (!id) return;
+      try {
+        const orderDoc = await getDoc(doc(db, "orders", id));
+        if (!orderDoc.exists()) {
+          Swal.fire('Tidak ditemukan', 'ID pesanan tidak valid', 'warning');
+          return;
+        }
+        const d = orderDoc.data();
+        const res = await Swal.fire({
+          title: 'Pesanan Ditemukan',
+          html: `<div style="text-align:left">
+            <div><strong>Produk:</strong> ${d.product || '-'}</div>
+            <div><strong>Pelanggan:</strong> ${d.user || '-'}</div>
+            <div><strong>Tanggal:</strong> ${new Date(d.timestamp||Date.now()).toLocaleString()}</div>
+            <div><strong>Status:</strong> ${d.status || 'Pending'}</div>
+          </div>`,
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Selesai',
+          denyButtonText: 'Siap diambil',
+          cancelButtonText: 'Sedang diproses'
+        });
+        if (res.isConfirmed) {
+          await updateStatus(id, 'Selesai');
+        } else if (res.isDenied) {
+          await updateStatus(id, 'Siap diambil');
+        } else if (res.dismiss === Swal.DismissReason.cancel) {
+          await updateStatus(id, 'Sedang diproses');
+        }
+      } catch (err) {
+        Swal.fire('Gagal', err.message, 'error');
+      }
+    }
+
+    function openScanner() {
+      scanOverlay.style.display = 'flex';
+      try {
+        html5QrCode = new Html5Qrcode('qrScanner');
+        html5QrCode.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: 250 },
+          (decodedText) => handleScan(decodedText),
+          () => {}
+        );
+      } catch (e) {
+        Swal.fire('Gagal', 'Tidak dapat membuka kamera', 'error');
+      }
+    }
+
+    async function closeScanner() {
+      try {
+        if (html5QrCode) await html5QrCode.stop();
+      } catch (e) {}
+      scanOverlay.style.display = 'none';
+    }
+    openScanBtn.addEventListener('click', openScanner);
+    closeScanBtn.addEventListener('click', closeScanner);
 
     // Firestore listeners: config
     function listenConfig() {

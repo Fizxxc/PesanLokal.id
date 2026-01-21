@@ -8,9 +8,6 @@ const orderHistory = document.getElementById('orderHistory');
 
 const products = [
   { name: "Es Teh", price: 3000 },
-  { name: "Teajus", price: 1000 },
-  { name: "Martel", price: "2000 - 10000" },
-  { name: "Cilor", price: "2000 - 10000" },
   { name: "Mie Goreng", price: 6000 },
   { name: "Mie Kuah", price: 6000 },
 ];
